@@ -55,8 +55,8 @@ You should have 5 projects
 ![projects](https://user-images.githubusercontent.com/67143135/85715121-65389c00-b6eb-11ea-9028-1e2ac7de4e1d.PNG)
 
 
-4) Import Source Code (CPU0_attack_project)
-  - Delete src folder in the CPU0_attack_project arborescence
+4) Import GIT Source Code (CPU0_attack_project)
+  - Delete the src folder in the CPU0_attack_project arborescence
   - Copy & paste git folders  "SideLine/attack_script/CPU0/src" and "SideLine/attack_script/CPU0/inc" into CPU0_attack_project (copy files and folders)  
  Project arborescence should look like that: 
  
@@ -66,7 +66,7 @@ You should have 5 projects
  - Right click on CPU0_attack_project -> Properties -> C/C++ General -> Paths and Symbols -> Add -> Workspace -> CPU0_attack_project/inc
  - Now all the errors should have disapeared
  
- 5) Import Source Code (CPU0_victim_project)
+ 5) Import GIT Source Code (CPU0_victim_project)
   - Reproduce step 4) with the CPU0_victim_project
   
 Screenshot of the global arborescence: 
