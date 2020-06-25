@@ -32,7 +32,7 @@ For those who don't have this file, Vivado allows us to create and customize it.
 
 ## Xilinx SDK (VITIS)
 
-1) Verify that the HW platform project exists in the project explorer 
+1) Verify that the HW platform project exists in the project explorer (if not add it)
 
 2) Create the attack project
   - File -> New -> Application Project
