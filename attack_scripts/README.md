@@ -10,6 +10,9 @@ MASTER DLL ADDR: 0xF80061E0
 
 ## VIVADO
 
+If you already have a working Hardware Platform Specification File for your board, you can skip this step and import it directly in the SDK.
+For those who don't have this file, Vivado allows us to create and customize it. 
+
 1) Create New Vivado Project
   - Select your board (Here Zybo)
   - No constraint file
@@ -48,6 +51,8 @@ MASTER DLL ADDR: 0xF80061E0
   - Click Finish
 
 You should have 5 projects
+
+PHOTO
 
 4) Import Source Code (CPU0_attack_project)
   - Delete src folder in the CPU0_attack_project arborescence
