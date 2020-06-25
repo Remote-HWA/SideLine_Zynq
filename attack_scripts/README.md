@@ -76,12 +76,14 @@ Screenshot of the global arborescence:
 6) Run Configuration
 
 - Connect your board in JTAG mode (PROG UART)
-- Right click CPU0_attack_project -> Run as -> Launch on hardware (System Debugger)
-- Open SDK terminal to test the console -> click on "plus" icon 
-- Select the appropriate COM port & baud rate (115200 default) -> press OK
-- Press enter in the shell. you should see:
+- Open an uart terminal (e.g. teraterm) to test the program
+- Select the appropriate COM port & baud rate (115200 default)
+- When the terminal is ready, right click CPU0_attack_project -> Run as -> Launch on hardware (System Debugger)
+- Press enter in the terminal, you should see:
 
-![shell](https://user-images.githubusercontent.com/67143135/85715447-c2cce880-b6eb-11ea-903a-ec2df18343dd.PNG)
+![teraterm1](https://user-images.githubusercontent.com/67143135/85725080-142da580-b6f5-11ea-9455-689780df846a.PNG)
+
+
 
 7) Dual Core Configuration
 
@@ -94,7 +96,8 @@ Now victim and attack programs shouldn parralel in differents CPU cores.
 - To verify, select Run
 Messages from the CPU0 and the CPU12 should appear in the console.
 
-![hello](https://user-images.githubusercontent.com/67143135/85715324-9e710c00-b6eb-11ea-8b97-f83136cae398.PNG)
+![teraterm2](https://user-images.githubusercontent.com/67143135/85725245-3aebdc00-b6f5-11ea-8a32-45431654139a.PNG)
+
 
 The attack is ready.
 
