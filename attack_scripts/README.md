@@ -17,6 +17,7 @@ For those who don't have this file, Vivado allows us to create and customize it.
   - Select your board (Here Zybo)
   - No constraint file
   - No source file
+  
 **2) Create a simple block design**
   - Add "Zynq7 processing system"
   - Run block automation
@@ -24,8 +25,11 @@ For those who don't have this file, Vivado allows us to create and customize it.
   - (optional) Modify UART1 baud rate to 921600 bauds (increases attack speed)
   - Connect "M_AXI_GP0_ACLK" to "FCLK_CLK0"
   - Create HDL wrapper
+  
 **3) Generate Block Design (Global)**
+
 **4) Generate Bitstream**
+
 **5) Export HW**
 - File -> Export -> Export HW (check include bitstream)
 - File -> Launch SDK
@@ -82,8 +86,6 @@ Screenshot of the global arborescence:
 - Press enter in the terminal, you should see:
 
 ![teraterm1](https://user-images.githubusercontent.com/67143135/85725080-142da580-b6f5-11ea-9455-689780df846a.PNG)
-
-
 
 **7) Dual Core Configuration**
 
