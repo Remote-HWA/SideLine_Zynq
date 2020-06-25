@@ -3,10 +3,10 @@
 
 ## Experimental Setup / Software Version
 
-**Board**: Zybo PB200-279 REV-B\
-**Processor**: Zynq XC7Z010CLG400\
-**Design suite**: Vivado 2018.1\
-**SDK**: Xilinx SDK 2018.1\
+**Board**: Zybo PB200-279 REV-B  
+**Processor**: Zynq XC7Z010CLG400  
+**Design suite**: Vivado 2018.1  
+**SDK**: Xilinx SDK 2018.1  
 
 ## Prelude: Vivado
 
