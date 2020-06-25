@@ -24,14 +24,39 @@ MASTER DLL ADDR: 0xF80061E0
 3) Generate Block Design (Global)
 4) Generate Bitstream
 5) Export HW
-6) Launch SDK
+- File -> Export -> Export HW (check include bitstream)
+- File -> Launch SDK
 
 ## XILINX SDK (VITIS)
 
 1) Verify that the HW platform project exists in the project explorer 
-2) Create a BSP project for the attack program 
--
-3) Create a BSP project for the attack program 
+
+2) Create the attack project
+  - File -> New -> Application Project
+  - Project Name -> CPU0_attack_project
+  - Processor CPU0 -> ps7_cortexa9_0
+  - Click Next 
+  - Select "Empty Application"
+  - Click Finish
+
+3) Create the victim project
+  - File -> New -> Application Project
+  - Project Name -> CPU1_victim_project
+  - Processor CPU0 -> ps7_cortexa9_1
+  - Click Next 
+  - Select "Empty Application"
+  - Click Finish
+
+You should have 5 projects
+
+4) Import Source Code (CPU0_attack_project)
+  - Delete src folder in the CPU0_victim_project arborescence
+  - Copy & paste git folders  "SideLine/attack_script/CPU0/src" and "SideLine/attack_script/CPU0/inc" into the CPU0_victim_project
+  
+  
+  
+  - Copy paste "SideLine/attack_script/CPU0/src" and "SideLine/attack_script/CPU0/inc" in the CPU0_victim_project
+
 
 
 Two C projects should be created 
