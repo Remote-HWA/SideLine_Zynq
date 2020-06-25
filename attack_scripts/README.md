@@ -34,7 +34,7 @@ For those who don't have this file, Vivado allows us to create and customize it.
 - File -> Export -> Export HW (check include bitstream)
 - File -> Launch SDK
 
-## Xilinx SDK (VITIS)
+## Xilinx SDK (Vitis)
 
 **1) Verify that the HW platform project exists in the project explorer** (if not add it)
 
@@ -102,6 +102,13 @@ This time, CPU#0 and CPU#1 messages should appear in the console.
 
 
 The attack is ready.
+
+
+# Program User Manual 
+
+## Help mode
+
+
 
 
 
