@@ -52,14 +52,15 @@ For those who don't have this file, Vivado allows us to create and customize it.
 
 You should have 5 projects
 
-PHOTO
+![projects](https://user-images.githubusercontent.com/67143135/85715121-65389c00-b6eb-11ea-9028-1e2ac7de4e1d.PNG)
+
 
 4) Import Source Code (CPU0_attack_project)
   - Delete src folder in the CPU0_attack_project arborescence
   - Copy & paste git folders  "SideLine/attack_script/CPU0/src" and "SideLine/attack_script/CPU0/inc" into CPU0_attack_project (copy files and folders)  
  Project arborescence should look like that: 
  
- Picture
+ ![attack_arbo](https://user-images.githubusercontent.com/67143135/85715557-df692080-b6eb-11ea-8354-8745e1370017.PNG)
  
  - We need to add "inc" folder in the project include directories:
  - Right click on CPU0_attack_project -> Properties -> C/C++ General -> Paths and Symbols -> Add -> Workspace -> CPU0_attack_project/inc
@@ -70,8 +71,7 @@ PHOTO
   
 Screenshot of the global arborescence: 
 
-PHOTO
-
+![global_arbo](https://user-images.githubusercontent.com/67143135/85715495-ce201400-b6eb-11ea-8279-ebc533fdf40d.PNG)
 
 6) Run Configuration
 
@@ -81,8 +81,7 @@ PHOTO
 - Select the appropriate COM port & baud rate (115200 default) -> press OK
 - Press enter in the shell. you should see:
 
-
-PHOTO
+![shell](https://user-images.githubusercontent.com/67143135/85715447-c2cce880-b6eb-11ea-903a-ec2df18343dd.PNG)
 
 7) Dual Core Configuration
 
@@ -95,7 +94,7 @@ Now victim and attack programs shouldn parralel in differents CPU cores.
 - To verify, select Run
 Messages from the CPU0 and the CPU12 should appear in the console.
 
-PHOTO
+![hello](https://user-images.githubusercontent.com/67143135/85715324-9e710c00-b6eb-11ea-8b97-f83136cae398.PNG)
 
 The attack is ready.
 
