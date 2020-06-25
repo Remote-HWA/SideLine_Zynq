@@ -8,7 +8,7 @@ Zynq XC7Z010CLG400
 
 MASTER DLL ADDR: 0xF80061E0
 
-## VIVADO
+## Prelude: Vivado
 
 If you already have a working Hardware Platform Specification File for your board, you can skip this step and import it directly in the SDK.
 For those who don't have this file, Vivado allows us to create and customize it. 
@@ -30,7 +30,7 @@ For those who don't have this file, Vivado allows us to create and customize it.
 - File -> Export -> Export HW (check include bitstream)
 - File -> Launch SDK
 
-## XILINX SDK (VITIS)
+## Xilinx SDK (VITIS)
 
 1) Verify that the HW platform project exists in the project explorer 
 
