@@ -1,12 +1,12 @@
 # Building the Attack on Xilinx Zynq-7000
 
 
-## Experimental Setup 
+## Experimental Setup / Software Version
 
-Zybo PB200-279 REV-B
-Zynq XC7Z010CLG400
-
-MASTER DLL ADDR: 0xF80061E0
+Board: Zybo PB200-279 REV-B
+Processor: Zynq XC7Z010CLG400
+Design suite: Vivado 2018.1
+SDK: Xilinx SDK 2018.1
 
 ## Prelude: Vivado
 
