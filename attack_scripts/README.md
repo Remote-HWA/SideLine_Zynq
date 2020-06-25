@@ -94,7 +94,7 @@ To set up the attack we need to modify the run configuration.
 
 Now victim and attack programs shouldn parralel in differents CPU cores.
 - To verify, select Run
-Messages from the CPU0 and the CPU12 should appear in the console.
+This time, CPU#0 and CPU#1 messages should appear in the console.
 
 ![teraterm2](https://user-images.githubusercontent.com/67143135/85725245-3aebdc00-b6f5-11ea-8a32-45431654139a.PNG)
 
