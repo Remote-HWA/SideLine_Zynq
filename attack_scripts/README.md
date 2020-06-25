@@ -60,8 +60,8 @@ You should have 5 projects
 
 
 **4) Import GIT Source Code (CPU0_attack_project)**
-  - Delete the src folder in the CPU0_attack_project arborescence
-  - Copy & paste git folders  "SideLine/attack_script/CPU0/src" and "SideLine/attack_script/CPU0/inc" into CPU0_attack_project (copy files and folders)  
+  - First, delete the existing "src" folder in the CPU0_attack_project arborescence
+  - Then, drag and drop git folders  "SideLine/attack_script/CPU0/src" and "SideLine/attack_script/CPU0/inc" into CPU0_attack_project (copy files and folders)  
  Project arborescence should look like that: 
  
  ![attack_arbo](https://user-images.githubusercontent.com/67143135/85715557-df692080-b6eb-11ea-8354-8745e1370017.PNG)
