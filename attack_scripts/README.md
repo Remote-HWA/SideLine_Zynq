@@ -1,4 +1,4 @@
-# Building the Attack on Xilinx Zynq-7000
+# Building SideLine (DLL) on Xilinx Zynq-7000
 
 
 ## Experimental Setup / Software Version
