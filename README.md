@@ -4,7 +4,7 @@ To meet the ever-growing need for performance in silicon devices, SoC providers 
 
 ![image](https://user-images.githubusercontent.com/67143135/85726797-bac67600-b6f6-11ea-9162-8daf8975c3bd.png)
 
-# What's inside this GitHub repository ?
+# What's inside this repository ?
 
 This repository provides a detailed tutorial on how to conduct SideLine DLL attack scenario (a). The attack is conducted on a Xilinx Zynq7010 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1). We provide all the source code in the folder **attack_script** associated to a detailed README helper file. The attack proposed in the paper was conducted on a Zybo board but should be easily portable on others devices that use Zynq-70xx family. Vivado and Xilinx SDK (Vitis) working installations are required to reproduce the attack.
 Several numpy arrays which contain 20M separated traces and their associated plaintexts are provided in the folder **attack_samples**. Filtered data arrays are also given, they provide better CPA results with a reduced noise. 
