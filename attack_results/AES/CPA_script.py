@@ -16,8 +16,8 @@ class CPA_DLL(object):
         self.ptFileBase = "results_pt" # base name of the plaintext files
         self.keyFile = open(os.path.join(self.inFolder,"results_key.csv"),"r") #contain the secret key in csv format (for experimental purpose)
         self.outFolder = os.path.join(os.getcwd(),"DLL_CPA_results")
-        self.nFile = 5
-        self.nTracePerFile = 2000000
+        self.nFile = 10
+        self.nTracePerFile = 1000000
 
         ##### 
         self.nTrace = 10000000 # number of DLL traces to process
