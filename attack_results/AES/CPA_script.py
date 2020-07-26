@@ -11,11 +11,13 @@ class CPA_DLL(object):
     def __init__(self):
 
         ##### Data files #####
-
-        self.dataFile = open(os.getcwd() + "\\DUAL_SSL_s100-300_2DLL_r_data.csv") #contain the DLL command in csv format
-        self.ptFile = open(os.getcwd() + "\\DUAL_SSL_s100-300_2DLL_r_pt.csv") #contain the plaintext in csv format
-        self.keyFile = open(os.getcwd() + "\\DUAL_SSL_s100-300_2DLL_r_key.csv") #contain the secret key in csv format (for experimental purpose)
-        self.outFolder = os.getcwd() + "\\DLL_CPA_results"
+        self.inFolder = os.path.join(os.getcwd(),"Database") #path that contain the csv files
+        self.dataFileBase = "results_data" # base name of the data files
+        self.ptFileBase = "results_pt" # base name of the plaintext files
+        self.keyFile = open(os.path.join(self.inFolder,"results_key.csv"),"r") #contain the secret key in csv format (for experimental purpose)
+        self.outFolder = os.path.join(os.getcwd(),"DLL_CPA_results")
+        self.nFile = 5
+        self.nTracePerFile = 2000000
 
         ##### 
         self.nTrace = 10000000 # number of DLL traces to process
@@ -65,15 +67,22 @@ class CPA_DLL(object):
     def Data_Acquisition(self):
 
         globalDataArray = np.zeros(self.nSample)
+        iFile = 0
 
         for iTrace in range(0, self.nTrace):
+
+            if iTrace % self.nTracePerFile == 0:
+                dataFile = open(os.path.join(self.inFolder,self.dataFileBase+"_%02d.csv"%iFile),"r") #contain the DLL samples in csv format
+                ptFile = open(os.path.join(self.inFolder,self.ptFileBase+"_%02d.csv"%iFile),"r") #contain the plaintext in csv format
+                iFile += 1
+
 
             #print treatment progression
             if (iTrace%self.moduloval)==0 and iTrace != 0:
                 print("Processed traces: %d - Time: %.2f/%.2fmin - Progression: %.2f%%"%(iTrace,(time.time() - self.startTime)/60,((time.time() - self.startTime)/(iTrace/self.nTrace))/60,(iTrace/self.nTrace)*100),end="\r")
 
-            dataArray = np.fromiter(map(int, self.dataFile.readline().split(",")), dtype=np.uint8)[0:self.nSample]
-            ptArray = np.fromiter(map(int, self.ptFile.readline().split(",")), dtype=np.uint8)
+            dataArray = np.fromiter(map(int, dataFile.readline().split(",")), dtype=np.uint8)[0:self.nSample]
+            ptArray = np.fromiter(map(int, ptFile.readline().split(",")), dtype=np.uint8)
 
             globalDataArray += dataArray
 
@@ -85,6 +94,10 @@ class CPA_DLL(object):
                 self.sumVarClass[iByte][ptArray[iByte]] += np.square(dataArray)
             self.sumVar += np.square(dataArray)
             self.sumAvg += dataArray
+
+        #Close data files
+        dataFile.close()
+        ptFile.close()
 
         #Compute average & variance 
         self.sumAvg =  np.divide(self.sumAvg,self.nTrace) 
@@ -210,8 +223,6 @@ class CPA_DLL(object):
         plt.plot(maxArray,linewidth=0.7, linestyle="-",color='#C0C0C0')
         plt.plot(minArray,linewidth=0.7, linestyle="-",color='#C0C0C0')
 
-        #print("%02x"%self.keyArray[iByte])
-
         if(self.keyArray[iByte] == currentArgMax):
             plt.plot(Correlation[currentArgMax],linewidth=0.7, linestyle="-",color='r')
         else:
@@ -225,12 +236,8 @@ class CPA_DLL(object):
         plt.ylabel("Correlation Rate")
         plt.text(0.02,0.98,"Best Correlation Rate : %.3f%%\n hyp : %x"%(currentMax*100,currentArgMax),horizontalalignment='left',
         verticalalignment='top', transform = ax.transAxes)
-        #plt.show()
         plt.savefig(os.path.join(self.outFolder,"corr_%02d.pdf"%(iByte)),dpi=600,transparent=True,bbox_inches='tight') 
         plt.close('all')
-
-        #print(Correlation[0])
-        #plt.plot(Correlation[0],linewidth=0.7, linestyle="-",color='#C0C0C0')
 
     #AES 32-BIT TTABLE 0
     Te0 = (
