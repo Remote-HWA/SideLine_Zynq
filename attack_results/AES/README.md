@@ -1,15 +1,35 @@
-# SideLine - Abstract
+# SideLine - OpenSSL attack on Zynq SoC
 
-To meet the ever-growing need for performance in silicon devices, SoC providers have been increasingly relying on software-hardware cooperation. By controlling hardware resources such as power or clock management from the software, developers earn the possibility to build more flexible and power efficient applications. Despite the benefits, these hardware components are now exposed to software code and can potentially be misused as open-doors to jeopardize trusted environments, perform privilege escalation or steal cryptographic secrets. In this work, we introduce SideLine, a novel side-channel vector based on delay-line components widely implemented in high-end SoCs. After providing a detailed method on how to access and convert delay-line data into power consumption information, we demonstrate that these entities can be used to perform remote power side-channel attacks. We report experiments carried out on two SoCs from distinct vendors and we recount several core-vs-core attack scenarios in which an adversary process located in one processor core aims at eavesdropping the activity of a victim process located in another core. For each scenario, we demonstrate the adversary ability to fully recover the secret key of an OpenSSL AES running in the victim core. Even more detrimental, we show that these attacks are still practicable if the victim or the attacker program runs over an operating system.
+This folder contains scripts and samples to perform the attack on a OpenSSL AES implementation running in the victim core.
 
-![image](https://user-images.githubusercontent.com/67143135/85726797-bac67600-b6f6-11ea-9162-8daf8975c3bd.png)
+## Content 
+The folder [**Database**] contains 10M compressed traces in .csv format. The total size is 428 MB and 6.16 GB when extracted.
+Each trace consists in 200 samples that contains 2 contiguous AES encryptions. The attack is thus conducted on a total of 20M AES encryptions.
 
-# What's inside this repository ?
+The python script **CPA_script.py** contains a working example of CPA attack using the **Database** files. It reads the data files, applies post-treatment on the traces (butterworth filtering) and computes CPA for each key bytes. File reading, filtering and CPA takes approximately 70 min on a basic I5-6440HQ CPU with 16 GB Ram for the total number of traces.
 
-This repository provides a detailed tutorial on how to conduct SideLine DLL attack scenario (a). The attack is conducted on a Xilinx Zynq7010 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1). We provide all the source code in the folder **attack_script** associated to a detailed README helper file. The attack proposed in the paper was conducted on a Zybo board but should be easily portable on others devices that use Zynq-70xx family. Vivado and Xilinx SDK (Vitis) working installations are required to reproduce the attack.
-Several numpy arrays which contain 20M separated traces and their associated plaintexts are provided in the folder **attack_samples**. Filtered data arrays are also given, they provide better CPA results with a reduced noise. 
-The SCA model leveraged in the paper is close to the first round sbox model but leverages the special t-table output used in OpenSSL AES. The following repository provides a working ttable version of the CPA program https://github.com/cryptolu/aes-cpa.
+The folder [**Results**] contains the CPA results obtained for 10M traces. It provides additionnal results as concord correlation plots, FFT, and khi2 statistical tests.
 
+## How to use the python CPA script
+
+Python requirement: python3, scipy, numpy, matplotlib 
+
+1) Clone the git folder.
+2) Go the database folder location.
+3) Extract the 5 zip files located within the [**Database**] folder.
+4) Double click on the CPA_script.py file.
+5) Wait until the end of processing and go to the newly created  DLL_CPA_results folder to observe the results.
+
+
+## How to modifythe python CPA script
+
+User can modify the CPA parameters such as number of traces, samples, filtering, etc. To do so, modify the _init_ method in the CPA_DLL class.
+- self.nTrace = 10000000   #number of DLL traces to process
+- self.nSample = 200       #number of sample per DLL trace
+- self.nByte = 16          #number of key bytes considered for the CPA
+- self.nClass = 256        #number of classes (8bit = 256 classes)
+- self.nHyp = 256          #number of key hypotheses (8bit = 256 hyp)
+- etc.
 
 
 
