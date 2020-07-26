@@ -1,8 +1,9 @@
-# SideLine - OpenSSL attack on Zynq SoC
+# AES OpenSSL attack on Xilinx Zynq SoC
 
 This folder contains scripts and samples to perform the attack on a OpenSSL AES implementation running in the victim core.
 
 ## Content 
+
 The folder [**Database**] contains 10M compressed traces in .csv format. The total size is 428 MB and 6.16 GB when extracted.
 Each trace consists in 200 samples that contains 2 contiguous AES encryptions. The attack is thus conducted on a total of 20M AES encryptions.
 
@@ -21,7 +22,7 @@ Python requirement: python3, scipy, numpy, matplotlib
 5) Wait until the end of processing and go to the newly created  DLL_CPA_results folder to observe the results.
 
 
-## How to modifythe python CPA script
+## How to modify the CPA parameters
 
 User can modify the CPA parameters such as number of traces, samples, filtering, etc. To do so, modify the _init_ method in the CPA_DLL class.
 - self.nTrace = 10000000   #number of DLL traces to process
