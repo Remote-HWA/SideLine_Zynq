@@ -17,7 +17,7 @@ Python requirement: python3, scipy, numpy, matplotlib
 
 1) Clone the git folder.
 2) Go the database folder location.
-3) Extract the 5 zip files located within the [**Database**] folder.
+3) Extract the 5 zip files located within the **Database** folder.
 4) Double click on the CPA_script.py file.
 5) Wait until the end of processing and go to the newly created  DLL_CPA_results folder to observe the results.
 
