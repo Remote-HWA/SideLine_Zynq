@@ -8,31 +8,25 @@ SideLine is a novel side-channel vector based on delay-line components widely im
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/67143135/85726797-bac67600-b6f6-11ea-9162-8daf8975c3bd.png" width="700" height="250">
-<em>image_caption</em>
 </p>
-
+<p align="center"> Figure 1: The three attack scenarios presented in SideLine<p align="center">
+  
 ## In this Repository
 
-This repository contains a detailed tutorial on how to conduct SideLine DLL attack scenario 
+This repository contains:
+- A detailed tutorial on how to build the first SideLine attack scenario as illustrated in Figure 1.a). Source codes, tutorials and other resources are located in the folder [**attack_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup).
 
-The attack is conducted on a Xilinx Zynq7010 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1).
+- DLL datasets for AES and RSA side-channel attacks and Python scripts for data treatment, Correlation Power Analysis and Simple Power Analysis. These resources are located in the folder [**attack_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results). 
 
+## Attack Scenario 
 
-We provide all the source code in the folder:
-- [**attack_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup).
+The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1).
 
-The attack proposed in the paper was conducted on a Zybo board but should be easily portable on others devices that use Zynq-70xx family. Vivado and Xilinx SDK (Vitis) working installations are required to reproduce the attack.
-Several numpy arrays which contain 20M separated traces and their associated plaintexts are provided in the folder 
+## Requirements
 
-- [**attack_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results). 
+- A Xilinx Zynq7000 based development board (eg: Zybo, zedboard, etc.)
+- Working installations of Xilinx Vivavo, Xilinx SDK (Vitis) and python3
 
-Filtered data arrays are also given, they provide better CPA results with a reduced noise. 
-The SCA model leveraged in the paper is close to the first round sbox model but leverages the special t-table output used in OpenSSL AES. The following repository provides a working ttable version of the CPA program https://github.com/cryptolu/aes-cpa.
-
-## Setup required to reproduce SideLine
-
-- A Zynq7000 based development board (eg: Zybo, zedboard, etc.)
-- Installations Xilinx Vivavo and Xilinx SDK (Vitis)
 
 
 
