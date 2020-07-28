@@ -1,6 +1,6 @@
 # SideLine - How Delay-Lines (May) Leak Secrets from your SoC
 
-This repository provides all the program codes and tutorials necessary to easily reproduce the attacks conducted in SideLine. It also comes with additionnal contents and results such as RSA attacks.
+This repository contains program codes, tutorial and results related to SideLine.
 
 ## About SideLine
 
