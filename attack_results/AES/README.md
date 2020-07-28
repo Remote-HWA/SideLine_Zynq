@@ -4,12 +4,12 @@ This folder contains scripts and samples to perform the attack on a OpenSSL AES 
 
 ## Content 
 
-The folder [**Database**] contains 10M compressed traces in .csv format. The total size is 428 MB and 6.16 GB when extracted.
+The folder [**Database**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES/Database) contains 10M compressed traces in .csv format. The total size is 428 MB and 6.16 GB when extracted.
 Each trace consists in 200 samples that contains 2 contiguous AES encryptions. The attack is thus conducted on a total of 20M AES encryptions.
 
-The python script **CPA_script.py** contains a working example of CPA attack using the **Database** files. It reads the data files, applies post-treatment on the traces (butterworth filtering) and computes CPA for each key bytes. File reading, filtering and CPA takes approximately 70 min for the total number of traces. Tested with a standard computer setup: i5-6440HQ CPU with 16 GB RAM.
+The python script [**CPA_script.py**](https://github.com/Remote-HWA/SideLine/blob/master/attack_results/AES/CPA_script.py) contains a working example of CPA attack using the **Database** files. It reads the data files, applies post-treatment on the traces (butterworth filtering) and computes CPA for each key bytes. File reading, filtering and CPA takes approximately 70 min for the total number of traces. Tested with a standard computer setup: i5-6440HQ CPU with 16 GB RAM.
 
-The folder [**Results**] contains the CPA results obtained for 10M traces. It provides additionnal results as concord correlation plots, FFT, and khi2 statistical tests.
+The folder [**CPA_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES/CPA_results) contains the CPA results obtained for 10M traces. It provides additionnal results as concord correlation plots, FFT, and khi2 statistical tests.
 
 ## How to use the python CPA script
 
