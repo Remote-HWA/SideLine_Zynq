@@ -18,7 +18,7 @@ This repository contains:
 
 - DLL datasets for AES and RSA side-channel attacks and Python scripts for data treatment, Correlation Power Analysis and Simple Power Analysis. These resources are located in the folder [**attack_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results). 
 
-## Attack Scenario 
+## Attack Principle 
 
 The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1).
 - The [**victim source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/CPU1_victim) contains several software crypto implementations such as OpenSSL AES and custom RSA (**new!**). It is used as an encryption service by the attack program.
