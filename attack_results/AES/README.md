@@ -25,11 +25,11 @@ Python requirement: python3, scipy, numpy, matplotlib
 ## How to modify the CPA parameters
 
 User can modify the CPA parameters such as number of traces, samples, filtering, etc. To do so, modify the _init_ method in the CPA_DLL class.
-- self.nTrace = 10000000   #number of DLL traces to process
-- self.nSample = 200       #number of sample per DLL trace
-- self.nByte = 16          #number of key bytes considered for the CPA
-- self.nClass = 256        #number of classes (8bit = 256 classes)
-- self.nHyp = 256          #number of key hypotheses (8bit = 256 hyp)
+- self.nTrace = 10000000&nbsp;&nbsp;&nbsp;#number of DLL traces to process
+- self.nSample = 200&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#number of sample per DLL trace
+- self.nByte = 16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#number of key bytes considered for the CPA
+- self.nClass = 256&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#number of classes (8bit = 256 classes)
+- self.nHyp = 256&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#number of key hypotheses (8bit = 256 hyp)
 - etc.
 
 
