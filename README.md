@@ -1,4 +1,5 @@
-# SideLine - How Delay-Lines (May) Leak Secrets from your SoC
+  
+SideLine - How Delay-Lines (May) Leak Secrets from your SoC
 
 This repository contains program codes, tutorial and results related to SideLine.
 
@@ -11,7 +12,7 @@ SideLine is a novel side-channel vector based on delay-line components widely im
 </p>
 <p align="center"> Figure 1: The three attack scenarios presented in SideLine<p align="center">
   
-## In this Repository
+## Content
 
 This repository contains:
 - A detailed tutorial on how to build the first SideLine attack scenario as illustrated in Figure 1.a). Source codes, tutorials and other resources are located in the folder [**attack_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup).
