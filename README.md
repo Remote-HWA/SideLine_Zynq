@@ -21,8 +21,8 @@ This repository contains:
 ## Attack Scenario 
 
 The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1).
-- The [**victim program**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/CORTEX-A9_ZYNQ/CPU1_victim) contains several software crypto implementations such as OpenSSL AES and custom RSA (**new!**). It can be used as an encryption service by the attack program.
-- The [**attack program**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/CORTEX-A9_ZYNQ/CPU0_attack) configures the encryption mode and uses DMA and DLL to perform SCA on the algorithms running in the victim program.
+- The [**victim source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/CORTEX-A9_ZYNQ/CPU1_victim) contains several software crypto implementations such as OpenSSL AES and custom RSA (**new!**). It can be used as an encryption service by the attack program.
+- The [**attack source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/CORTEX-A9_ZYNQ/CPU0_attack) contain several methods which configure the encryption mode and uses DMA and DLL to perform SCA on the algorithms running in the victim program.
 
 ## Requirements
 
