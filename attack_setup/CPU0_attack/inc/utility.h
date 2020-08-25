@@ -13,5 +13,6 @@ int hammingDistance(int x, int y);
 int hammingWeight(int n);
 int GetInt(void);
 int power(int x, unsigned int y);
-char* GetString(void);
+char * GetString(void);
 void init_perfcounters (int do_reset, int enable_divider);
+void HW_uDelay(int usecond);

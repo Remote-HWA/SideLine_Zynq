@@ -12,13 +12,13 @@ class RSA_viewer(object):
 
         ##### Data files #####
         self.inFolder = os.path.join(os.getcwd(),"Database") #path that contain the csv files
-        self.dataFileBase = "results_data" # base name of the data files
+        self.dataFileBase = "RSA1024_Naive_t10000_s100000" # base name of the data files
         self.outFolder = os.path.join(os.getcwd(),"DLL_RSA_results")
         self.nFile = 1
-        self.nTracePerFile = 2000
+        self.nTracePerFile = 1400
         ##### 
-        self.nTrace = 2000 # number of DLL traces to process
-        self.nSample = 50000 # number of sample per DLL trace
+        self.nTrace =1400 # number of DLL traces to process
+        self.nSample = 100000 # number of sample per DLL trace
         self.moduloval = 100 # Refresh Rate (processed traces)
         self.startTime = time.time() # Get time at the begining of treatment
 

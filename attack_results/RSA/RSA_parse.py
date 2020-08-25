@@ -54,7 +54,7 @@ fichier_csv = open(out_path, 'wb')
 # MESURE TAILLE SAMPLE
 while True:
     line = fichier_raw.readline()
-    index = line.find("WolfSSL RSA")
+    index = line.find("Start Acquisition")
     if index > -1:
         line = fichier_raw.readline()
         while not line.strip():

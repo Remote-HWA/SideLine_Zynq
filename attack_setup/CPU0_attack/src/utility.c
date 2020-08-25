@@ -192,11 +192,6 @@ char * GetString(void)
 
 void init_perfcounters (int do_reset, int enable_divider)
 {
-	/* enable user-mode access to the performance counter*/
-	asm ("MCR p15, 0, %0, C9, C14, 0\n\t" :: "r"(1));
-	/* disable counter overflow interrupts (just in case)*/
-	asm ("MCR p15, 0, %0, C9, C14, 2\n\t" :: "r"(0x8000000f));
-
     // in general enable all counters (including cycle counter)
     int value = 1;
 
@@ -224,4 +219,28 @@ void init_perfcounters (int do_reset, int enable_divider)
     // program the performance-counter control-register:
     asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(value));
 }
+
+
+
+void HW_uDelay(int usecond)
+{
+	int val;
+
+    // program the performance-counter control-register:
+    asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"(0x17));
+
+	while(val < (usecond*666))
+	{
+		// Read performance counter -> val
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val));
+	}
+
+	//xil_printf("\n\r delay val = %d",val);
+
+}
+
+
+
+
+
 

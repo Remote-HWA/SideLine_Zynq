@@ -1,438 +1,84 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#include "xil_io.h"
 #include "xdmaps.h"
 #include "xscugic.h"
-#include "xparameters.h"
-#include "xil_io.h"
+#include "main_CPU0.h"
 #include "utility.h"
-#include "main.h"
-#include "xil_cache.h"
-
-#define DMA_DEVICE_ID2 			XPAR_XDMAPS_0_DEVICE_ID
-#define DMA_DEVICE_ID 			XPAR_XDMAPS_1_DEVICE_ID
-#define INTC_DEVICE_ID			XPAR_SCUGIC_SINGLE_DEVICE_ID
-
-#define DMA_DONE_INTR_0			XPAR_XDMAPS_0_DONE_INTR_0
-#define DMA_DONE_INTR_1			XPAR_XDMAPS_0_DONE_INTR_1
-#define DMA_DONE_INTR_2			XPAR_XDMAPS_0_DONE_INTR_2
-#define DMA_DONE_INTR_3			XPAR_XDMAPS_0_DONE_INTR_3
-#define DMA_DONE_INTR_4			XPAR_XDMAPS_0_DONE_INTR_4
-#define DMA_DONE_INTR_5			XPAR_XDMAPS_0_DONE_INTR_5
-#define DMA_DONE_INTR_6			XPAR_XDMAPS_0_DONE_INTR_6
-#define DMA_DONE_INTR_7			XPAR_XDMAPS_0_DONE_INTR_7
-#define DMA_FAULT_INTR			XPAR_XDMAPS_0_FAULT_INTR
-
-#define TEST_ROUNDS	1				/* Number of loops that the Dma transfers run.*/
-#define DMA_LENGTH	10000			/* Length of the Dma Transfers */
-#define TIMEOUT_LIMIT 	0x10000		/* Loop count for timeout */
-
-#define KEY_READY 0x4
-#define KEY_ACK 0x8
-#define AES_START 0xc
-#define AES_ACK 0x10
-#define AES_END 0x14
-#define PLAIN_READY 0x18
-#define PLAIN_ACK 0x1c
-#define AES_PLAIN 0x20
-#define AES_CIPHER 0x30
-#define AES_SKEY 0x40
-#define TRANSFER_END 0x44
-
-/**************************** Type Definitions *******************************/
-
-/***************** Macros (Inline Functions) Definitions *********************/
-
-/************************** Function Prototypes ******************************/
-
-/************************** Macro Definitions *****************************/
-
-/************************** Variable Definitions *****************************/
-//static int Src[DMA_LENGTH] __attribute__ ((aligned (32)));
-static int Dst[DMA_LENGTH] __attribute__ ((aligned (32)));
 
 
-XDmaPs DmaInstance;
-XScuGic GicInstance;
-int val1,val2,val3,val4,val5;
-const uint32_t sharedAddr = 0x7000000;
+#define DMA_LENGTH	100000 /* Length of the Dma Transfers */
+#define Dst (*(volatile unsigned int (*)[DMA_LENGTH])(0x08000000))
 
 int main(void)
 {
-	xil_printf("\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\rCPU#0: Welcome! I'm ready to attack!\n\r");
+	char * user_input;
+	char * command = malloc(sizeof(char) * 32);
+	init_perfcounters (1,0);
 
-	//wait for CPU#1 to be ready
-	//usleep(100000);
+	// Print Hello Banner
+	xil_printf("\n\r\n\r\n\r\n\r");
+	xil_printf(
+	"   _____    __    ___         \n\r"
+	"  / __(_)__/ /__ / (_)__  ___ \n\r"
+	" _\\ \\/ / _  / -_) / / _ \\/ -_)\n\r"
+	"/___/_/\\_,_/\\__/_/_/_//_/\\__/ \n\r");
 
-	StateMachine();
+	xil_printf("\n\rCPU#0: Welcome! I'm ready to attack!\n\r");
+
+	// Wait for CPU1 ready
+	HW_uDelay(100000);
+
+	xil_printf("\n\rEnter \"help\" to display the command helper\n\r");
+
+	do{
+
+		xil_printf("SideLine>");
+		command = GetString();
+		user_input = strtok(command," ");
+		xil_printf("\n\r");
+
+		if((strcmp(user_input,"aes")==0) || (strcmp(user_input,"AES")==0))
+		{
+			AES128_OpenSSL_Attack(user_input);
+		}
+		else if((strcmp(user_input,"naive")==0) || (strcmp(user_input,"NAIVE")==0))
+		{
+			RSA1024_Naive_Attack(user_input);
+		}
+		else if((strcmp(user_input,"constant")==0) || (strcmp(user_input,"CONSTANT")==0))
+		{
+			//not implemented yet
+		}
+		else if((strcmp(user_input,"ladder")==0) || (strcmp(user_input,"LADDER")==0))
+		{
+			//not implemented yet
+		}
+		else if((strcmp(user_input,"wolf")==0) || (strcmp(user_input,"WOLF")==0))
+		{
+			//not implemented yet
+		}
+		else if((strcmp(user_input,"dll")==0) || (strcmp(user_input,"DLL")==0))
+		{
+			Print_DLL_State(user_input);
+		}
+		else if((strcmp(user_input,"?")==0) || (strcmp(user_input,"help")==0))
+		{
+			Command_Helper();
+		}
+		else
+		{
+			if(strcmp(command,"")!=0){
+				xil_printf("Unknown Command %s\n\r",command);
+			}
+		}
+	}
+	while(1);
 
 	return 1;
 }
 
-
-int StateMachine(void)
-{
-	/*******MASTER DLL 1**********/
-	int baseaddr = 0xF80061E0;
-	uint8_t coarsemask1 = 0x7f;
-	uint8_t coarsepos1 = 13;
-	uint8_t finemask1 = 0x03;
-	uint8_t finepos1 = 11;
-
-	/*******MASTER DLL 0**********/
-	uint8_t coarsemask0 = 0x7f;
-	uint8_t coarsepos0 = 4;
-	uint8_t finemask0 = 0x03;
-	uint8_t finepos0 = 2;
-
-	/*******TO MASTER DLL OUTPUTFILTER 0**********/
-	/*int baseaddr = 0xF80061E4;
-	uint8_t coarsemask = 0xFF;
-	uint8_t coarsepos = 2;
-	uint8_t finemask = 0x03;
-	uint8_t finepos = 0;*/
-
-	/*******FROM MASTER DLL OUTPUTFILTER 0**********/
-	/*int baseaddr = 0xF80061E4;
-	uint8_t coarsemask = 0X7F;
-	uint8_t coarsepos = 12;
-	uint8_t finemask = 0x03;
-	uint8_t finepos = 10;*/
-
-	/*******DLL_WDQS**********/
-	/*int baseaddr = 0xF80061CC;
-	uint8_t coarsemask = 0X7F;
-	uint8_t coarsepos = 20;
-	uint8_t finemask = 0x03;
-	uint8_t finepos = 18;*/
-
-
-	int Status;
-	uint32_t min_cycle=0xffffffff;
-	unsigned int Channel = 0;
-	volatile int Checked[XDMAPS_CHANNELS_PER_DEV];
-	XDmaPs *DmaInst = &DmaInstance;
-	XDmaPs_Config *DmaCfg;
-	XDmaPs_Cmd DmaCmd;
-	char * command;
-	char * value;
-	u16 DeviceId = DMA_DEVICE_ID;
-	uint8_t DLL0_cmd = 0;
-	uint8_t DLL1_cmd = 0;
-	int nb_acq 	   = 0;
-	int true_nb_sample  = 0;
-	int sample_min = 0;
-	int sample_max = 0;
-	uint8_t p_i = 0;
-	uint32_t plainArray[4];
-	uint32_t DLL_reg = 0;
-
-	DmaCfg = XDmaPs_LookupConfig(DeviceId); if (DmaCfg == NULL) { return XST_FAILURE;}
-	Status = XDmaPs_CfgInitialize(DmaInst, DmaCfg, DmaCfg->BaseAddress); if (Status != XST_SUCCESS) { return XST_FAILURE; }
-	Status = SetupInterruptSystem(&GicInstance, DmaInst);
-
-  do{
-	   usleep(200000);
-	   xil_printf("TEST>");
-	   command = GetString();
-	   value = strtok(command," ");
-	   xil_printf("\n\r");
-
-
-		if((strcmp(value,"ssl")==0) || (strcmp(value,"SSL")==0))
-		{
-			xil_printf("Start Dual Core Attack on OpenSSL AES\n\r");
-
-
-			/************ INITIALISATION *************/
-
-			//The index of the first sample to be displayed (default 0)
-			value = strtok(NULL," ");
-			sample_min = (value == NULL)?0:int2int(value);
-
-			//The index of the last sample to be displayed (default 100)
-			value = strtok(NULL," ");
-			sample_max = (value == NULL)?100:int2int(value);
-
-			//The number of traces to acquire (default 10
-			value = strtok(NULL," ");
-			nb_acq = (value == NULL)?10:int2int(value);
-
-			//Total number of sample acquired during the DMA transfer
-			true_nb_sample = sample_max - 0;
-
-
-			/********* DMA CONFIGURATION *********/
-
-			// Reset the DLL command destination array
-			for (int i = 0; i < true_nb_sample; i++) Dst[i] = 0;
-
-			// Configure DMA source, destination and size
-			set_DmaCmd (&DmaCmd, 4, (u32*) baseaddr, (u32*) Dst, true_nb_sample);
-			XDmaPs_SetDoneHandler(DmaInst, Channel, DmaDoneHandler, (void *)Checked);
-
-
-			/********  AES CONFIGURATION *********/
-
-			// Loop over the number of traces
-			for(uint32_t trace = 0 ; trace < nb_acq ; trace++)
-			{
-
-				// Prepare plaintext transfer to CPU#1
-				for(p_i = 0; p_i < 4 ; p_i++){
-					plainArray[p_i] = (uint32_t)rand();
-					Xil_Out32(sharedAddr+AES_PLAIN+p_i*4,plainArray[p_i]);
-				}
-
-				// Send plain ready to CPU#1
-				Xil_Out32(sharedAddr+PLAIN_READY,1);
-
-				//RESET DMA STATUS
-				Checked[Channel] = 0;
-
-				//RESET PERF COUNTERS
-				init_perfcounters (1,0);
-
-				//WAIT FOR CPU1 READY and reset PLAIN_ACK
-				while(Xil_In32(sharedAddr+PLAIN_ACK)!=1);
-				Xil_Out32(sharedAddr+PLAIN_ACK,0);
-
-				//LAUNCH DMA
-				Status = XDmaPs_Start(DmaInst, Channel, &DmaCmd, 0); if (Status != XST_SUCCESS) { xil_printf ("Error!\n\r"); return XST_FAILURE; }
-
-				//READ PERF COUNTER -> VAL1
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val1));
-
-				//For loop delay
-				for(int i = 0 ; i < 1000 ; i++){}
-
-				//READ PERF COUNTER -> VAL2
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val2));
-
-				//LAUNCH CPU1 ENCRYPTION
-				Xil_Out32(sharedAddr+AES_START,0x1);
-
-				//WAIT FOR CPU1 END OF ENCRYPTION and reset AES_END
-				while(Xil_In32(sharedAddr+AES_END) != 0x1){}
-				Xil_Out32(sharedAddr+AES_END,0x0);
-
-				//READ PERF COUNTER -> VA42
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val3));
-
-				for(int i = 0 ; i < 1000 ; i++){}
-
-				//READ PERF COUNTER -> VA42
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val4));
-
-				//WAIT FOR DMA END
-				while (!Checked[Channel]) {}
-
-				//READ PERF COUNTER -> VAL3 DMA
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val5));
-
-				if((val2-val1) < min_cycle)
-				{
-					min_cycle = val2-val1;
-				}
-
-				//if((val2-val1) < 104030) //2 AES
-				//if((val2-val1) < 104030) //2 AES
-				//if((val2-val1) < 3160) //1 AES 2 for loop 60 optimisation 0 both
-				//if((val2-val1) < 2130)	//1 AES 2 for loop 70 optimisation 02(core1) 00(core0
-				//if((val3-val1) < 201390))
-				//{
-
-				xil_printf("\n\rplaintext : %08x%08x%08x%08x\n\r",plainArray[0],plainArray[1],plainArray[2],plainArray[3]);
-
-				for (int i = sample_min; i < true_nb_sample; i++)
-				{
-
-					DLL1_cmd = (uint8_t)((Dst[i]>>finepos1)&finemask1) +  ((uint8_t)((Dst[i]>>coarsepos1)&coarsemask1)*4) -120 + 45;
-					DLL0_cmd = (uint8_t)((Dst[i]>>finepos0)&finemask0) + ((uint8_t)((Dst[i]>>coarsepos0)&coarsemask0)*4) -120 + 45;
-					//MasterDLL_0
-					//xil_printf("%c",DLL0_cmd);
-					//MasterDLL_1
-					//xil_printf("%c",DLL1_cmd);
-					//MasterDLL_0 + MasterDLL_1
-					xil_printf("%c",DLL1_cmd+DLL0_cmd-45);
-				}
-
-				//}
-				//xil_printf("\n\rnb cycles FOR : %d", val2-val1);
-				//xil_printf("\n\rnb cycles AES : %d", val3-val2);
-				//xil_printf("\n\rnb cycles FOR  : %d", val4-val3);
-				//xil_printf("\n\rnb cycles DMA  : %d", val5-val4);
-				//xil_printf("\n\rmin cycle: %d",min_cycle);
-				xil_printf("\n\rciphertext : %08x%08x%08x%08x",Xil_In32(sharedAddr+AES_CIPHER),Xil_In32(sharedAddr+AES_CIPHER+4),Xil_In32(sharedAddr+AES_CIPHER+8),Xil_In32(sharedAddr+AES_CIPHER+12));
-
-				//SEND END TO CPU1
-				Xil_Out32(sharedAddr+TRANSFER_END,0x1);
-
-			}
-			xil_printf("\n\r");
-		}
-		else if((strcmp(value,"expdual")==0) || (strcmp(value,"EXPDUAL")==0))
-		{
-			xil_printf("Start Dual Core Attack on Open SSL\n\r");
-
-			//READ NUMBER OF ACQUISITIONS
-			int nb_acq 	   = 0;
-			int true_nb_sample  = 0;
-			int sample_min = 0;
-			int sample_max = 0;
-
-			value = strtok(NULL," "); // getdata
-			sample_min = (value == NULL)?0:int2int(value);
-			value = strtok(NULL," "); // getdata
-			sample_max = (value == NULL)?10:int2int(value);
-			value = strtok(NULL," "); // getdata
-			nb_acq = (value == NULL)?10:int2int(value);
-			true_nb_sample = sample_max - 0;
-
-			//CLR DESTINATION
-			for (int i = 0; i < true_nb_sample; i++) Dst[i] = 0;
-
-			//DMA CONFIGURATION
-			set_DmaCmd (&DmaCmd, 4, (u32*) baseaddr, (u32*) Dst, true_nb_sample);
-			XDmaPs_SetDoneHandler(DmaInst, Channel, DmaDoneHandler, (void *)Checked);
-
-			usleep(1000000);
-
-			//PRINT KEY RECEIVED FROM CPU1
-			xil_printf("key : %08x%08x%08x%08x\n\r",Xil_In32(sharedAddr+0x24),Xil_In32(sharedAddr+0x28),Xil_In32(sharedAddr+0x2c),Xil_In32(sharedAddr+0x30));
-
-			//xil_printf("\n\rCPU0: %08x\n\r",Xil_In32(sharedAddr));
-			// LOOP OVER TRACE NUMBER
-			for(uint32_t trace = 0 ; trace < nb_acq ; trace++)
-			{
-				//RESET DMA STATUS
-				Checked[Channel] = 0;
-
-				//RESET PERF COUNTERS
-				init_perfcounters (1,0);
-
-				//WAIT FOR CPU1 READY
-				while(Xil_In32(sharedAddr) != 5){
-					//xil_printf("stuck 5\n\r");
-				}
-
-				//LAUNCH DMA
-				Status = XDmaPs_Start(DmaInst, Channel, &DmaCmd, 0); if (Status != XST_SUCCESS) { xil_printf ("Error!\n\r"); return XST_FAILURE; }
-
-				//READ PERF COUNTER -> VAL1
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val1));
-
-				for(int i = 0 ; i < 20000 ; i++){}
-				//for(int i = 0 ; i < 1000 ; i++){}
-
-				//READ PERF COUNTER -> VAL2
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val2));
-
-				//LAUNCH CPU1 ENCRYPTION
-				Xil_Out32(sharedAddr,0x1);
-				//WAIT FOR CPU1 END OF ENCRYPTION
-				while(Xil_In32(sharedAddr) != 2){}
-
-				//READ PERF COUNTER -> VA42
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val3));
-
-
-				for(int i = 0 ; i < 40000 ; i++){}
-				//for(int i = 0 ; i < 1000 ; i++){}
-
-				//READ PERF COUNTER -> VA42
-				//asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val4));
-
-				//WAIT FOR DMA END
-				while (!Checked[Channel]) {}
-
-				//READ PERF COUNTER -> VAL3 DMA
-				asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val5));
-
-				if((val2-val1) < min_cycle)
-				{
-					min_cycle = val2-val1;
-				}
-
-				//if((val2-val1) < 104030) //2 AES
-
-				//if((val2-val1) < 104030) //2 AES
-				//if((val2-val1) < 3160) //1 AES 2 for loop 60 optimisation 0 both
-				//if((val2-val1) < 2130)	//1 AES 2 for loop 70 optimisation 02(core1) 00(core0
-			  //if((val3-val1) < 201390))
-			  //{
-				xil_printf("\n\rplaintext : %08x%08x%08x%08x\n\r",Xil_In32(sharedAddr+0x4),Xil_In32(sharedAddr+0x8),Xil_In32(sharedAddr+0xc),Xil_In32(sharedAddr+0x10));
-
-				for (int i = sample_min; i < true_nb_sample; i++)
-				{
-
-					DLL1_cmd = (uint8_t)((Dst[i]>>finepos1)&finemask1) +  ((uint8_t)((Dst[i]>>coarsepos1)&coarsemask1)*4) -120 + 45;
-					DLL0_cmd = (uint8_t)((Dst[i]>>finepos0)&finemask0) + ((uint8_t)((Dst[i]>>coarsepos0)&coarsemask0)*4) -120 + 45;
-					//MasterDLL_0
-					//xil_printf("%c",DLL0_cmd);
-					//MasterDLL_1
-					//xil_printf("%c",DLL1_cmd);
-					//MasterDLL_0 + MasterDLL_1
-					xil_printf("%c",DLL1_cmd+DLL0_cmd-45);
-				}
-				/*xil_printf("\n\rnb cycles FOR : %d", val2-val1);
-				xil_printf("\n\rnb cycles AES : %d", val3-val2);
-				//xil_printf("\n\rnb cycles FOR  : %d", val4-val3);
-				xil_printf("\n\rnb cycles DMA  : %d", val5-val1);*/
-					//xil_printf("\n\rmin cycle: %d",min_cycle);
-					//xil_printf("\n\rciphertext : %08x%08x%08x%08x",Xil_In32(sharedAddr+0x14),Xil_In32(sharedAddr+0x18),Xil_In32(sharedAddr+0x1c),Xil_In32(sharedAddr+0x20));
-			//*}
-			/*	else
-				{
-					xil_printf ("\n\rnb cycles : %d", val2-val1);
-				}*/
-
-				//SEND END TO CPU1
-				Xil_Out32(sharedAddr,0x3);
-
-			}
-			xil_printf("\n\r");
-		}
-		else if((strcmp(value,"dll")==0) || (strcmp(value,"DLL")==0))
-		{
-
-			/************ INITIALISATION *************/
-
-			//The index of the first sample to be displayed (default 0)
-			value = strtok(NULL," ");
-			true_nb_sample = (value == NULL)?10:int2int(value);
-
-
-			xil_printf("DLL value: \n\r");
-
-			for (int i = 0; i < true_nb_sample; i++)
-			{
-				DLL_reg = Xil_In32(baseaddr);
-				DLL1_cmd = (uint8_t)((DLL_reg>>finepos1)&finemask1) +  ((uint8_t)((DLL_reg>>coarsepos1)&coarsemask1)*4) -100;
-				DLL0_cmd = (uint8_t)((DLL_reg>>finepos0)&finemask0) + ((uint8_t)((DLL_reg>>coarsepos0)&coarsemask0)*4) -100;
-				//MasterDLL_0
-				//xil_printf("%c",DLL0_cmd);
-				//MasterDLL_1
-				//xil_printf("%c",DLL1_cmd);
-				//MasterDLL_0 + MasterDLL_1
-				xil_printf("%02d ",DLL1_cmd+DLL0_cmd);
-			}
-
-			xil_printf("\n\r");
-
-		}
-		else
-		{
-			xil_printf("Unknown Command\n\r");
-		}
-   }
-   while(1);
-
-
-  return 0;
-
-}
 
 int SetupInterruptSystem(XScuGic *GicPtr, XDmaPs *DmaPtr)
 {
@@ -563,9 +209,349 @@ void set_DmaCmd (XDmaPs_Cmd *DmaCmd, int BurstSize, u32 *Source, u32 *Destinatio
 	DmaCmd->BD.Length = DMA_WORDS * sizeof(int); // Length of data transmission
 }
 
+int AES128_OpenSSL_Attack(char * user_input)
+{
+	// DMA variables
+	XDmaPs_Config *DmaCfg;
+	u16 DeviceId = DMA_DEVICE_ID;
+	XDmaPs_Cmd DmaCmd;
+	XDmaPs DmaInstance;
+	XScuGic GicInstance;
+	XDmaPs *DmaInst = &DmaInstance;
+	unsigned int Channel = 0;
+	volatile int Checked[XDMAPS_CHANNELS_PER_DEV];
+	int Status = 0;
+	int val1,val2,val3,val4,val5;
+
+	// Acquisition variables
+	int nb_acq 	   = 0;
+	int true_nb_sample  = 0;
+	int sample_min = 0;
+	int sample_max = 0;
+	uint8_t DLL0_cmd = 0;
+	uint8_t DLL1_cmd = 0;
+	uint8_t k_i, p_i;
+	uint32_t iDelay,iSample;
+	uint32_t plainArray[4];
+	uint8_t keyArray[16] = {0x7d,0xc4,0x04,0x63,0xee,0x8d,0x0d,0x11,0x56,0xda,0x16,0x8a,0x71,0x1d,0xef,0xba};
+
+	/************ Acquisition initialize *************/
+
+	//The index of the first sample to be displayed (default 0)
+	user_input = strtok(NULL," ");
+	sample_min = (user_input == NULL)?0:int2int(user_input);
+
+	//The index of the last sample to be displayed (default 100)
+	user_input = strtok(NULL," ");
+	sample_max = (user_input == NULL)?100:int2int(user_input);
+
+	//The number of traces to acquire (default 10
+	user_input = strtok(NULL," ");
+	nb_acq = (user_input == NULL)?10:int2int(user_input);
+
+	//Total number of sample acquired during the DMA transfer
+	true_nb_sample = sample_max - 0;
+
+	// Select AES Mode
+	Xil_Out32(MODE_ADDR,AES_SSL);
+
+	// Print Mode
+	xil_printf("\n\rStart Dual Core Attack on OpenSSL AES\n\r");
+	xil_printf("\n\rnTrace: %d",nb_acq);
+	xil_printf("\n\rnSample: %d (%d:%d)",sample_max-sample_min,sample_min,sample_max-1);
 
 
+	/********* DMA Configuration *********/
+
+	// Configure DMA source, destination and size
+	DmaCfg = XDmaPs_LookupConfig(DeviceId); if (DmaCfg == NULL) { return XST_FAILURE;}
+	Status = XDmaPs_CfgInitialize(DmaInst, DmaCfg, DmaCfg->BaseAddress); if (Status != XST_SUCCESS) { return XST_FAILURE; }
+	Status = SetupInterruptSystem(&GicInstance, DmaInst);
+	set_DmaCmd (&DmaCmd, 4, (u32*) DLL_addr, (u32*) Dst, true_nb_sample);
+	XDmaPs_SetDoneHandler(DmaInst, Channel, DmaDoneHandler, (void *)Checked);
 
 
+	// Print the AES key for experimental purposes
+	xil_printf("\n\rkey : ");
+	for(k_i = 0 ; k_i < 16 ; k_i++){ xil_printf("%02x",keyArray[k_i]);}
+	xil_printf("\n\r");
+
+	/********* Acquisition Start *********/
+
+	xil_printf("\n\rStart Acquisition:");
+	// Loop over the number of traces
+	for(uint32_t iTrace = 0 ; iTrace < nb_acq ; iTrace++)
+	{
+
+		// Prepare plaintext for transfer to CPU#1
+		for(p_i = 0; p_i < 4 ; p_i++){
+			plainArray[p_i] = (uint32_t)rand();
+			Xil_Out32(PLAIN_ADDR+p_i*4,plainArray[p_i]);
+		}
+
+		// Send plain ready to CPU#1
+		Xil_Out32(CONFIG_ADDR,PLAIN_READY);
+
+		// Reset DMA status
+		Checked[Channel] = 0;
+
+		// Reset performance counters
+		init_perfcounters (1,0);
+
+		// Wait for CPU1 encryption ready
+		while(Xil_In32(CONFIG_ADDR) != CRYPT_READY);
+
+		// Start DMA transfer (DLL sampling)
+		Status = XDmaPs_Start(DmaInst, Channel, &DmaCmd, 0); if (Status != XST_SUCCESS) { xil_printf ("Error!\n\r"); return XST_FAILURE; }
+
+		// Read performance counter -> val1
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val1));
+
+		// For loop delay
+		for(iDelay = 0 ; iDelay < 100 ; iDelay++){}
+
+		// Read performance counter -> val2
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val2));
+
+		// Launch CPU1 encryption
+		Xil_Out32(CONFIG_ADDR,CRYPT_START);
+
+		// Wait for CPU1 end encryption
+		while(Xil_In32(CONFIG_ADDR) != CRYPT_END){}
+
+		// Read performance counter -> val3
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val3));
+
+		// For loop delay
+		for(iDelay = 0 ; iDelay < 100 ; iDelay++){}
+
+		// Read performance counter -> val4
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val4));
+
+		// Wait for DMA end transfer
+		while (!Checked[Channel]) {}
+
+		// Read performance counter -> val5
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val5));
+
+		/*if((val3-val2) < min_cycle)
+		{
+			min_cycle = val3-val2;
+		}*/
+
+		//if((val2-val1) < 104030) //2 AES
+		//if((val2-val1) < 104030) //2 AES
+		//if((val2-val1) < 3160) //1 AES 2 for loop 60 optimisation 0 both
+		//if((val2-val1) < 2130)//1 AES 2 for loop 70 optimisation 02(core1) 00(core0
+		//if((val3-val1) < 201390))
+		//{
+
+		xil_printf("\n\rplaintext : %08x%08x%08x%08x\n\r",plainArray[0],plainArray[1],plainArray[2],plainArray[3]);
+
+		for (iSample = sample_min; iSample < true_nb_sample; iSample++)
+		{
+			DLL1_cmd = (uint8_t)((Dst[iSample]>>finepos1)&finemask1) +  ((uint8_t)((Dst[iSample]>>coarsepos1)&coarsemask1)*4) -120 + 45;
+			DLL0_cmd = (uint8_t)((Dst[iSample]>>finepos0)&finemask0) + ((uint8_t)((Dst[iSample]>>coarsepos0)&coarsemask0)*4) -120 + 45;
+			//MasterDLL_0
+			//xil_printf("%c",DLL0_cmd);
+			//MasterDLL_1
+			//xil_printf("%c",DLL1_cmd);
+			//MasterDLL_0 + MasterDLL_1
+			xil_printf("%c",DLL1_cmd+DLL0_cmd-45);
+		}
+
+		//}
 
 
+		//xil_printf("\n\rnb cycles FOR : %d", val2-val1);
+		//xil_printf("\n\rnb cycles AES : %d", val3-val2);
+		//xil_printf("\n\rnb cycles FOR  : %d", val4-val3);
+		//xil_printf("\n\rnb cycles DMA  : %d", val5-val4);
+		//xil_printf("\n\rmin cycle: %d",min_cycle);
+
+		//Pre
+		if(iTrace == nb_acq - 1)
+		{
+			//SELECT IDLE MODE
+			Xil_Out32(MODE_ADDR,IDLE);
+		}
+
+		//WAIT CPU0 END and reset TRANSFER_END
+		Xil_Out32(CONFIG_ADDR,CRYPT_STOP);
+
+		// Wait for CPU#1 ciphertext
+		while(Xil_In32(CONFIG_ADDR) != CIPHER_READY){}
+
+		// Print ciphertext
+		xil_printf("\n\rciphertext : %08x%08x%08x%08x",Xil_In32(CIPHER_ADDR),Xil_In32(CIPHER_ADDR+4),Xil_In32(CIPHER_ADDR+8),Xil_In32(CIPHER_ADDR+12));
+
+
+	}
+	xil_printf("\n\rEnd Acquisition.\n\r\n\r");
+
+	//SELECT IDLE CONFIG
+	Xil_Out32(CONFIG_ADDR,IDLE);
+
+	return 1;
+}
+
+int RSA1024_Naive_Attack(char * user_input)
+{
+	XDmaPs_Config *DmaCfg;
+	u16 DeviceId = DMA_DEVICE_ID;
+	XDmaPs_Cmd DmaCmd;
+	XDmaPs DmaInstance;
+	XScuGic GicInstance;
+	XDmaPs *DmaInst = &DmaInstance;
+	unsigned int Channel = 0;
+	volatile int Checked[XDMAPS_CHANNELS_PER_DEV];
+	int val1,val2,val3;
+
+	//READ NUMBER OF ACQUISITIONS
+	int Status = 0;
+	int nb_acq 	   = 0;
+	int true_nb_sample  = 0;
+	int sample_min = 0;
+	int sample_max = 0;
+	uint8_t DLL0_cmd = 0;
+	uint8_t DLL1_cmd = 0;
+
+	//SELECT RSA MODE
+	Xil_Out32(MODE_ADDR,RSA_NAIVE);
+
+	/************ INITIALISATION *************/
+
+	//The index of the first sample to be displayed (default 0)
+	user_input = strtok(NULL," ");
+	sample_min = (user_input == NULL)?0:int2int(user_input);
+
+	//The index of the last sample to be displayed (default 100)
+	user_input = strtok(NULL," ");
+	sample_max = (user_input == NULL)?100:int2int(user_input);
+
+	//The number of traces to acquire (default 10
+	user_input = strtok(NULL," ");
+	nb_acq = (user_input == NULL)?10:int2int(user_input);
+
+	//Total number of sample acquired during the DMA transfer
+	true_nb_sample = sample_max - 0;
+
+	xil_printf("\n\r\n\rDual Core Attack on Naive RSA:");
+	xil_printf("\n\rnTrace: %d",nb_acq);
+	xil_printf("\n\rnSample: %d (%d:%d)\n\r",sample_max-sample_min,sample_min,sample_max-1);
+
+	/********* DMA CONFIGURATION *********/
+
+	// Reset the DLL command destination array
+	for (int i = 0; i < true_nb_sample; i++) Dst[i] = 0;
+
+	// Configure DMA source, destination and size
+	DmaCfg = XDmaPs_LookupConfig(DeviceId); if (DmaCfg == NULL) { return XST_FAILURE;}
+	Status = XDmaPs_CfgInitialize(DmaInst, DmaCfg, DmaCfg->BaseAddress); if (Status != XST_SUCCESS) { return XST_FAILURE; }
+	Status = SetupInterruptSystem(&GicInstance, DmaInst);
+	set_DmaCmd (&DmaCmd, 4, (u32*) DLL_addr, (u32*) Dst, true_nb_sample);
+	XDmaPs_SetDoneHandler(DmaInst, Channel, DmaDoneHandler, (void *)Checked);
+
+	xil_printf("\n\rStart Acquisition:\n\r");
+	// Loop over the number of traces
+	for(uint32_t iTrace = 0 ; iTrace < nb_acq ; iTrace++)
+	{
+
+		//RESET DMA STATUS
+		Checked[Channel] = 0;
+
+		//RESET PERF COUNTERS
+		init_perfcounters (1,0);
+
+		//WAIT FOR CPU1 READY
+		while(Xil_In32(CONFIG_ADDR) != CRYPT_READY){}
+
+		//LAUNCH DMA
+		Status = XDmaPs_Start(DmaInst, Channel, &DmaCmd, 0); if (Status != XST_SUCCESS) { xil_printf ("Error!\n\r"); return XST_FAILURE; }
+
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val1));
+
+		//LAUNCH CPU1 ENCRYPTION
+		Xil_Out32(CONFIG_ADDR,CRYPT_START);
+
+		//WAIT FOR CPU1 END OF ENCRYPTION
+		while(Xil_In32(CONFIG_ADDR) != CRYPT_END){}
+
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val2));
+
+		//WAIT FOR DMA END
+		while (!Checked[Channel]) {}
+
+		asm volatile ("MRC p15, 0, %0, c9, c13, 0\t\n": "=r"(val3));
+
+		for (int i = sample_min; i < true_nb_sample; i++){
+
+			DLL1_cmd = (uint8_t)((Dst[i]>>finepos1)&finemask1) +  ((uint8_t)((Dst[i]>>coarsepos1)&coarsemask1)*4) -120 + 45;
+			DLL0_cmd = (uint8_t)((Dst[i]>>finepos0)&finemask0) + ((uint8_t)((Dst[i]>>coarsepos0)&coarsemask0)*4) -120 + 45;
+			xil_printf("%c",DLL1_cmd+DLL0_cmd-45);
+
+		}
+		xil_printf("\n\r");
+
+		if(iTrace == nb_acq - 1)
+		{
+			//SELECT IDLE MODE
+			Xil_Out32(MODE_ADDR,IDLE);
+		}
+
+		//SEND END TO CPU1
+		Xil_Out32(CONFIG_ADDR,CRYPT_STOP);
+
+	}
+	xil_printf("End Acquisition.\n\r\n\r");
+
+
+	//SELECT IDLE CONFIG
+	Xil_Out32(CONFIG_ADDR,IDLE);
+
+	return Status;
+}
+
+void Print_DLL_State(char * user_input)
+{
+	/************ INITIALISATION *************/
+	uint32_t nSample;
+	uint32_t DLL_reg;
+	uint8_t DLL0_cmd = 0;
+	uint8_t DLL1_cmd = 0;
+
+	user_input = strtok(NULL," ");
+	nSample = (user_input == NULL)?10:int2int(user_input);
+
+	xil_printf("DLL value: \n\r");
+
+	for (int iSample = 0; iSample < nSample; iSample++)
+	{
+		DLL_reg = Xil_In32(DLL_addr);
+		DLL1_cmd = (uint8_t)((DLL_reg>>finepos1)&finemask1) +  ((uint8_t)((DLL_reg>>coarsepos1)&coarsemask1)*4) -100;
+		DLL0_cmd = (uint8_t)((DLL_reg>>finepos0)&finemask0) + ((uint8_t)((DLL_reg>>coarsepos0)&coarsemask0)*4) -100;
+		//MasterDLL_0
+		//xil_printf("%c",DLL0_cmd);
+		//MasterDLL_1
+		//xil_printf("%c",DLL1_cmd);
+		//MasterDLL_0 + MasterDLL_1
+		xil_printf("%02d ",DLL1_cmd+DLL0_cmd);
+	}
+
+	xil_printf("\n\r");
+}
+
+void Command_Helper(void)
+{
+	xil_printf("\n\rCommand Helper:");
+	xil_printf("\n\r----------------------------------------------------------------");
+	xil_printf("\n\r| cmd  |              Parameters            |    Description   |");
+	xil_printf("\n\r|--------------------------------------------------------------|");
+	xil_printf("\n\r| aes  | <sample_min> <sample_max> <nTrace> |   AES attack     |");
+	xil_printf("\n\r| dll  | <nSample>                          | Print DLL value  |");
+	xil_printf("\n\r|naive | <sample_min> <sample_max> <nTrace> | RSA naive attack |");
+	xil_printf("\n\r----------------------------------------------------------------");
+
+	xil_printf("\n\r\n\rexample : \"aes 0 100 10\" = 10 AES traces x 100 samples\n\r\n\r");
+
+}
