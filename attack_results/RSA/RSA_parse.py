@@ -66,7 +66,7 @@ while True:
 fichier_raw.close()
 
 
-fichier_raw = open(in_path, 'rb') #error replace removes codec errors4
+fichier_raw = open(in_path, 'rb') #error remove codec errors
 
 for iTrace in range(nb_trace):
 
