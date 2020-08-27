@@ -1,5 +1,4 @@
-# Building SideLine (DLL) on Xilinx Zynq-7000
-
+# Building SideLine (AES) on Xilinx Zynq-7000
 
 ## Experimental Setup / Software Version
 
