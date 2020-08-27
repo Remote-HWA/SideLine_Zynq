@@ -23,7 +23,7 @@ The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. Two C progra
 - The [**victim source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU1_victim) contains several software crypto implementations such as OpenSSL AES and custom RSA (**new!**). It is used as an encryption service by the attack program.
 - The [**attack source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU0_attack) contain several methods which configure the encryption mode and uses DMA and DLL to perform SCA on the algorithms running in the victim program.
 
-### SideLine on RSA
+### SideLine on RSA (new!)
 The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. A single [**C program**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup) handles both RSA calculation and DLL acquisition. Several custom RSAs (naive, constant time, montgomery ladder) have been implemented for experimentation needs. [**WolfSSL**](https://github.com/wolfssl) crypto library was used to develop the different RSA variants.
 
 ## Requirements
