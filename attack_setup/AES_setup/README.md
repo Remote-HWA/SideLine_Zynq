@@ -107,19 +107,7 @@ The attack is ready.
 
 ### Command table
 | cmd | Parameters | Description |
-| ---- | ---------------------------------- | ---------------- |
-| aes | <sample_min> <sample_max> <nTrace> | AES attack |
-| dll | <nSample> | Print DLL value |
-
-
-
-
-
-
-
-
-
+| --- | --- | --- |
+| aes | <sample_min> <sample_max> <n_Trace> | Start AES SCA acquisition using DLL |
+| dll | <n_Sample> | Print current DLL value in decimal |
   
-
-
-
