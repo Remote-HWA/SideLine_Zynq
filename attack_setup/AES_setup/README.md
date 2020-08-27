@@ -106,11 +106,10 @@ The attack is ready.
 # Program User Manual 
 
 ### Command table
-| cmd  |              Parameters            |    Description   |
+| cmd | Parameters | Description |
 | ---- | ---------------------------------- | ---------------- |
-| aes  | <sample_min> <sample_max> <nTrace> |   AES attack     |
-| dll  | <nSample>                          | Print DLL value  |
-                                                                      	|
+| aes | <sample_min> <sample_max> <nTrace> | AES attack |
+| dll | <nSample> | Print DLL value |
 
 
 
