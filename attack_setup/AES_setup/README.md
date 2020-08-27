@@ -111,7 +111,7 @@ The attack is ready.
 | aes | <sample_min> <sample_max> <n_Trace> | Start AES SCA acquisition using DLL |
 | dll | <n_Sample> | Print current DLL value in decimal |
   
-# Save serial output and use it for SCA
+# Save the serial output and use it for SCA
 
 - Once the attack program is up and working, save the serial log using logging in Putty or File->log in teraterm. 
 - Then start the AES SCA acquisition using the command AES -> ex: aes 0 100 100000
