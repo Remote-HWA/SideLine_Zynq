@@ -1,119 +1,31 @@
-# Building SideLine (DLL) on Xilinx Zynq-7000
+# SideLine - How Delay-Lines (May) Leak Secrets from your SoC
 
+## About SideLine
 
-## Experimental Setup / Software Version
+SideLine is a novel side-channel vector based on delay-line components widely implemented in high-end SoCs. In the associated paper [paper ref], we provide a detailed method on how to access and convert delay-line data into power consumption information and we demonstrate that these entities can be used to perform remote power side-channel attacks. We report experiments carried out on two SoCs from distinct vendors and we recount several core-vs-core attack scenarios in which an adversary process located in one processor core aims at eavesdropping the activity of a victim process located in another core. For each scenario, we demonstrate the adversary ability to fully recover the secret key of an OpenSSL AES running in the victim core. Even more detrimental, we show that these attacks are still practicable if the victim or the attacker program runs over an operating system.
 
-**Board**: Zybo PB200-279 REV-B  
-**Processor**: Zynq XC7Z010CLG400  
-**Design suite**: Vivado 2018.1  
-**SDK**: Xilinx SDK 2018.1  
-
-## Prelude: Vivado
-
-If you already have a working Hardware Platform Specification File for your board, you can skip this step and import it directly in the SDK.
-For those who don't have this file, Vivado allows us to create and customize it. 
-
-**1) Create New Vivado Project**
-  - Select your board (Here Zybo)
-  - No constraint file
-  - No source file
+<p align="center">
+<img src="https://user-images.githubusercontent.com/67143135/85726797-bac67600-b6f6-11ea-9162-8daf8975c3bd.png" width="700" height="250">
+</p>
+<p align="center"> Figure 1: The three attack scenarios presented in SideLine<p align="center">
   
-**2) Create a simple block design**
-  - Add "Zynq7 processing system"
-  - Run block automation
-  - Check apply board preset then press "OK"
-  - (optional) Modify UART1 baud rate to 921600 bauds (increases attack speed)
-  - Connect "M_AXI_GP0_ACLK" to "FCLK_CLK0"
-  - Create HDL wrapper
-  
-**3) Generate Block Design (Global)**
+## Content
 
-**4) Generate Bitstream**
+This repository contains:
+- A detailed tutorial on how to build the first SideLine attack scenario as illustrated in Figure 1.a). Source codes, tutorials and other resources are located in the folder [**attack_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup).
 
-**5) Export HW**
-- File -> Export -> Export HW (check include bitstream)
-- File -> Launch SDK
+- DLL datasets for AES and RSA side-channel attacks and Python scripts for data treatment, Correlation Power Analysis and Simple Power Analysis. These resources are located in the folder [**attack_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results). 
 
-## Xilinx SDK (Vitis)
+## Attack Principle 
 
-**1) Verify that the HW platform project exists in the project explorer** (if not add it)
+The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1).
+- The [**victim source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/CPU1_victim) contains several software crypto implementations such as OpenSSL AES and custom RSA (**new!**). It is used as an encryption service by the attack program.
+- The [**attack source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/CPU0_attack) contain several methods which configure the encryption mode and uses DMA and DLL to perform SCA on the algorithms running in the victim program.
 
-**2) Create the attack project**
-  - File -> New -> Application Project
-  - Project Name -> CPU0_attack_project
-  - Processor CPU0 -> ps7_cortexa9_0
-  - Click Next 
-  - Select "Empty Application"
-  - Click Finish
+## Requirements
 
-**3) Create the victim project**
-  - File -> New -> Application Project
-  - Project Name -> CPU1_victim_project
-  - Processor CPU0 -> ps7_cortexa9_1
-  - Click Next 
-  - Select "Empty Application"
-  - Click Finish
-
-You should have 5 projects
-
-![projects](https://user-images.githubusercontent.com/67143135/85715121-65389c00-b6eb-11ea-9028-1e2ac7de4e1d.PNG)
-
-
-**4) Import GIT Source Code (CPU0_attack_project)**
-  - First, delete the existing "src" folder in the CPU0_attack_project arborescence
-  - Then, drag and drop git folders  "SideLine/attack_script/CPU0/src" and "SideLine/attack_script/CPU0/inc" into CPU0_attack_project (copy files and folders)  
- Project arborescence should look like that: 
- 
- ![attack_arbo](https://user-images.githubusercontent.com/67143135/85715557-df692080-b6eb-11ea-8354-8745e1370017.PNG)
- 
- - We need to add "inc" folder in the project include directories:
- - Right click on CPU0_attack_project -> Properties -> C/C++ General -> Paths and Symbols -> Add -> Workspace -> CPU0_attack_project/inc
- - Now all the errors should have disapeared
- 
- **5) Import GIT Source Code (CPU0_victim_project)**
-  - Reproduce step 4) with the CPU0_victim_project
-  
-Screenshot of the global arborescence: 
-
-![global_arbo](https://user-images.githubusercontent.com/67143135/85715495-ce201400-b6eb-11ea-8279-ebc533fdf40d.PNG)
-
-**6) Run Configuration**
-
-- Connect your board in JTAG mode (PROG UART)
-- Open an uart terminal (e.g. teraterm) to test the program
-- Select the appropriate COM port & baud rate (115200 default)
-- When the terminal is ready, right click CPU0_attack_project -> Run as -> Launch on hardware (System Debugger)
-- Press enter in the terminal, you should see:
-
-![teraterm1](https://user-images.githubusercontent.com/67143135/85725080-142da580-b6f5-11ea-9455-689780df846a.PNG)
-
-**7) Dual Core Configuration**
-
-To set up the attack we need to modify the run configuration. 
-
-- Select RUN -> Run Configurations... -> Select the saved configuration
-- Select application window -> Check ps7_cortexa9_1 -> press Apply
-
-Now victim and attack programs shouldn parralel in differents CPU cores.
-- To verify, select Run
-This time, CPU#0 and CPU#1 messages should appear in the console.
-
-![teraterm2](https://user-images.githubusercontent.com/67143135/85725245-3aebdc00-b6f5-11ea-8a32-45431654139a.PNG)
-
-
-The attack is ready.
-
-
-# Program User Manual 
-
-### Command table
-| label 	| description                      	| example                                                                           	|
-|-------	|----------------------------------	|-----------------------------------------------------------------------------------	|
-| help  	| display help for the commands    	| `help -c quit`                                                                        |
-| quit  	| quit the command prompt         	| `quit`                                                                            	|
-| aes   	| launch AES encryption/decryption 	| `aes -k 0x000102030405060708090a0b0c0d0e0f -p 0x00112233445566778899aabbccddeeff` 	|
-| tdc   	| calibrate TDC and direct read    	| `tdc -c 2048`                                                                     	|
-| fifo   	| read and flush fifo           	| `fifo -r`                                                                         	|
+- A Xilinx Zynq7000 based development board (eg: Zybo, zedboard, etc.)
+- Working installations of Xilinx Vivavo, Xilinx SDK (Vitis) and python3
 
 
 
@@ -121,9 +33,6 @@ The attack is ready.
 
 
 
-
-
-  
 
 
 
