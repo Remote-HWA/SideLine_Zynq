@@ -106,13 +106,11 @@ The attack is ready.
 # Program User Manual 
 
 ### Command table
-| label 	| description                      	| example                                                                           	|
-|-------	|----------------------------------	|-----------------------------------------------------------------------------------	|
-| help  	| display help for the commands    	| `help -c quit`                                                                        |
-| quit  	| quit the command prompt         	| `quit`                                                                            	|
-| aes   	| launch AES encryption/decryption 	| `aes -k 0x000102030405060708090a0b0c0d0e0f -p 0x00112233445566778899aabbccddeeff` 	|
-| tdc   	| calibrate TDC and direct read    	| `tdc -c 2048`                                                                     	|
-| fifo   	| read and flush fifo           	| `fifo -r`                                                                         	|
+| cmd  |              Parameters            |    Description   |
+|--------------------------------------------------------------|
+| aes  | <sample_min> <sample_max> <nTrace> |   AES attack     |
+| dll  | <nSample>                          | Print DLL value  |
+                                                                      	|
 
 
 
