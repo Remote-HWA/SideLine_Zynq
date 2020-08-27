@@ -1,7 +1,7 @@
 # SideLine - Zynq SCA results
 
 This folder contain SCA attack scripts for AES and RSA and the example results that were obtained on the Zybo board.
-
+To conduct a correlation power analysis on openSSL AES use the AES_SCA.py script located in the 
 ## OpenSSL AES
 
 - Attack results on AES OpenSSL implementation
