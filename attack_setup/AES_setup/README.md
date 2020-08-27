@@ -107,7 +107,7 @@ The attack is ready.
 
 ### Command table
 | cmd  |              Parameters            |    Description   |
-|------|------------------------------------|------------------|
+| ---- | ---------------------------------- | ---------------- |
 | aes  | <sample_min> <sample_max> <nTrace> |   AES attack     |
 | dll  | <nSample>                          | Print DLL value  |
                                                                       	|
