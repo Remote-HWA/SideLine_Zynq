@@ -36,6 +36,6 @@ This folder contain SCA attack scripts for AES and RSA and the experimental resu
 </p>
 
 ## Full RSA results
-Constant time + naive + ladder in binary format
+Full acquisition of Naive, Constant time and Ladder RSA are available in binary format [full_RSA]
 
 
