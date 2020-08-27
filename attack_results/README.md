@@ -1,5 +1,6 @@
 # SideLine - Zynq SCA results
 
+This folder contain SCA attack scripts for AES and RSA and the example results that were obtained on the Zybo board.
 
 ## OpenSSL AES
 
