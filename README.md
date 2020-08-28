@@ -22,12 +22,12 @@ This repository contains:
 The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1). 
 - The victim source code contains the [**OpenSSL**](https://github.com/openssl/openssl) AES crypto implementation. It is used as an encryption service by the attack program.
 - The attack source code contain several methods which configure the encryption mode and uses DMA and DLL to perform SCA on the algorithms running in the victim program.
-- AES attack tutorial is available in [**SideLine on AES**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup)
+- The AES attack tutorial is available in [**SideLine on AES**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup)
 
 ### SideLine on RSA (new!)
-The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. The [**RSA source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup) both handles RSA calculation and DLL acquisition. 
-- Several custom RSAs (naive, constant time, montgomery ladder) have been implemented for experimentation needs. [**WolfSSL**](https://github.com/wolfssl) crypto library was used to develop the different RSA variants.
-- AES attack tutorial is available in [**SideLine on RSA**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup)
+The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. A C program handles the RSA calculation and the DLL acquisition. 
+- Several custom RSAs are implemented (naive, constant time, montgomery ladder). [**WolfSSL**](https://github.com/wolfssl) crypto library was used to develop the different RSA variants.
+- The RSA attack tutorial is available in [**SideLine on RSA**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup)
 
 ## Requirements
 - A Xilinx Zynq7000 based development board (eg: Zybo, zedboard, etc.)
