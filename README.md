@@ -42,7 +42,7 @@ The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. A C program 
 
 ## Requirements
 - A Xilinx Zynq7000 based development board (eg: Zybo, zedboard, etc.)
-- Working installations of Xilinx Vivavo, Xilinx SDK (Vitis) and python3
+- Working installations of [**Xilinx Vivavo, Xilinx SDK**](https://www.xilinx.com/support/download.html) (Vitis) and [**python3**]("https://www.python.org/downloads/")
 
 
 
