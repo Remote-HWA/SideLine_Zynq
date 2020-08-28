@@ -32,7 +32,7 @@ The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. A C program 
 ## Attack Results
 
 - A database containing DLL acquisitions for AES and RSA is provided in the latest release. 
-- Python scripts located in [**AES_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES_results) and [**RSA_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/RSA_results) can be used to perform SPA and CPA attacks. These scripts can be directly used on the database file or on your own experiments file. 
+- Python scripts located in [**AES_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES_results) and [**RSA_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/RSA_results) can be used to perform SPA and CPA attacks. These scripts can be directly used on the database file or on your own experiment files. 
 
 ## Requirements
 - A Xilinx Zynq7000 based development board (eg: Zybo, zedboard, etc.)
