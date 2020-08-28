@@ -87,8 +87,8 @@ The attack is ready.
 # Save the serial output and use it for SCA
 
 - Once the attack program is up and working, save the serial log using logging in Putty or File->log in teraterm. 
-- Then start the AES SCA acquisition using the command AES -> ex: aes 0 100 100000
-- Once the acquisition has finished, use the python script available in [**AES_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES) to parse the file and conduct the CPA. Follow the guideline given in the README file associated to the script.
+- Then start the AES SCA acquisition using the command AES -> ex: naive 0 50000 1000
+- Once the acquisition has finished, use the python script available in [**RSA_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/RSA_results) to parse the file and conduct the CPA. Follow the guideline given in the README file associated to the script.
 
 
 
