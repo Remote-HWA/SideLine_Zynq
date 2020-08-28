@@ -15,7 +15,7 @@ The folder [**CPA_results**](https://github.com/Remote-HWA/SideLine/tree/master/
 
 Python requirement: python3, scipy, numpy, matplotlib 
 
-1) Download the latest SideLine release in [**here**]
+1) Download the latest SideLine [**release**]
 2) Extract the database folder.
 3) Open the AES_SCA.py file and specify the AES datafile path. *self.inPath = "your_path/aes_sideline"*
 4) Open a terminal at the AES_SCA.py location and start the CPA. *python3 AES_SCA.py*
