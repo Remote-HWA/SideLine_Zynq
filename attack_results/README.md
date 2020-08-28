@@ -35,7 +35,5 @@ This folder contain SCA attack scripts for AES and RSA and the experimental resu
 <img src="https://user-images.githubusercontent.com/67143135/91450797-fb6c7800-e87c-11ea-8685-8dd261664c61.png" width="700" height="250">
 </p>
 
-## Full RSA results
-Full acquisition of Naive, Constant time and Ladder RSA are available in binary format [full_RSA]
 
 
