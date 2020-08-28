@@ -63,7 +63,7 @@ You should have 5 projects
 
 **4) Import GIT Source Code (CPU0_attack_project)**
   - First, delete the existing "src" folder in the CPU0_attack_project arborescence
-  - Then, drag and drop git folders  "SideLine/attack_script/CPU0/src" and "SideLine/attack_script/CPU0/inc" into CPU0_attack_project (copy files and folders)  
+  - Then, drag and drop git folders  [**src**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU0_attack/src) and [**inc**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU0_attack/inc) into CPU0_attack_project (copy files and folders)  
  Project arborescence should look like that: 
  
  ![attack_arbo](https://user-images.githubusercontent.com/67143135/85715557-df692080-b6eb-11ea-8354-8745e1370017.PNG)
@@ -116,9 +116,9 @@ The attack is ready.
   
 # Save the serial output and use it for SCA
 
-- Once the attack program is up and working, save the serial log using logging in Putty or File->log in teraterm. 
+- Once the attack program is up and working, save the serial log using logging in Putty or "File->log..." in teraterm. 
 - Then start the AES SCA acquisition using the command AES -> ex: aes 0 100 100000
-- Once the acquisition has finished, use the python script available in [**AES_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES) to parse the file and conduct the CPA. Follow the guideline given in the README file associated to the script.
+- Once the acquisition has finished, use the python script available in [**AES_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES_results) to parse the file and conduct the CPA. Follow the guideline given in the README file associated to the script.
 
 
 
