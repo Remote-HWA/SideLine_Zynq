@@ -29,7 +29,6 @@ The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. A C program 
 - Several custom RSAs are implemented (naive, constant time, montgomery ladder). **WolfSSL** crypto library was used to develop the different RSA variants.
 - The RSA attack tutorial is available in [**SideLine on RSA**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup)
 
-
 ## Requirements
 - A Xilinx Zynq7000 based development board (eg: Zybo, zedboard, etc.)
 - Working installations of Xilinx Vivavo, Xilinx SDK (Vitis) and python3
