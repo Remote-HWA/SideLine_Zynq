@@ -13,23 +13,26 @@ If you already have a working Hardware Platform Specification File for your boar
 For those who don't have this file, Vivado allows us to create and customize it. 
 
 **1) Create New Vivado Project**
-  - Select your board (Here Zybo)
-  - No constraint file
-  - No source file
+  - Start Vivado
+  - Select "Create Project" 
+  - Do not add constraint or source files
+  - Select your board part (here Zybo). *If the board file does not appear in your vivado version, download it and [**add it**](https://reference.digilentinc.com/reference/software/vivado/board-files?redirect=1)*
   
 **2) Create a simple block design**
-  - Add "Zynq7 processing system"
-  - Run block automation
-  - Check apply board preset then press "OK"
+  - Click on "Create Block Design" and name it "SideLine"
+  - In the "Diagram" window, click on "+" to add an IP
+  - Add "Zynq7 processing system" block
+  - Click on "Run block automation"
+  - Make sure that the "Apply Board Preset" is checked then press "OK"
   - (optional) Modify UART1 baud rate to 921600 bauds (increases attack speed)
   - Connect "M_AXI_GP0_ACLK" to "FCLK_CLK0"
-  - Create HDL wrapper
+  - In the "Sources" menu, right click on the block design and select "Create HDL Wrapper"
   
-**3) Generate Block Design (Global)**
+**3) Generate Bitstream**
+ - Click on "Generate block design" located in the flow navigator
+ - if successful select "Generate Bitstream" located in the flow navigator 
 
-**4) Generate Bitstream**
-
-**5) Export HW**
+**4) Export HW**
 - File -> Export -> Export HW (check include bitstream)
 - File -> Launch SDK
 
