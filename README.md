@@ -20,7 +20,7 @@ This repository contains:
 
 ### SideLine on AES
 The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1).
-- The [**victim source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU1_victim) contains several software crypto implementations such as OpenSSL AES and custom RSA (**new!**). It is used as an encryption service by the attack program.
+- The [**victim source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU1_victim) contains the [**OpenSSL**](https://github.com/openssl/openssl) AES crypto implementation. It is used as an encryption service by the attack program.
 - The [**attack source code**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU0_attack) contain several methods which configure the encryption mode and uses DMA and DLL to perform SCA on the algorithms running in the victim program.
 
 ### SideLine on RSA (new!)
