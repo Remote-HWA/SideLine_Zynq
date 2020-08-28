@@ -40,10 +40,10 @@ int main(int argc, char* argv[])
 
 
 	do{
-		xil_printf("\n\rTEST>");
-
+		xil_printf("SideLine>");
 		command = GetString();
 		user_input = strtok(command," ");
+		xil_printf("\n\r");
 
 		/********RSA 2048 WOLFSSL*********/
 		if((strcmp(user_input,"wssl")==0) || (strcmp(user_input,"WSSL")==0))
@@ -77,7 +77,9 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			xil_printf("\n\rUnknown Command");
+			if(strcmp(command,"")!=0){
+				xil_printf("Unknown Command %s\n\r",command);
+			}
 		}
 
 	}
