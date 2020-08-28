@@ -47,7 +47,7 @@ For those who don't have this file, Vivado allows us to create and customize it.
 
 You should have 3 projects
 
-![projects](https://user-images.githubusercontent.com/67143135/85715121-65389c00-b6eb-11ea-9028-1e2ac7de4e1d.PNG)
+![projects](https://user-images.githubusercontent.com/67143135/91533436-294ecc80-e910-11ea-843e-fd6c00a804db.PNG)
 
 
 **3) Import GIT Source Code (RSA_setup)**
@@ -55,7 +55,7 @@ You should have 3 projects
   - Then, drag and drop git folders [**src**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup/RSA_sources/src) and [**inc**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup/RSA_sources/inc) into RSA_viewer_project (copy files and folders)  
  Project arborescence should look like that: 
  
- ![attack_arbo](https://user-images.githubusercontent.com/67143135/85715557-df692080-b6eb-11ea-8354-8745e1370017.PNG)
+ ![attack_arbo](https://user-images.githubusercontent.com/67143135/91533432-28b63600-e910-11ea-96a0-5906af471ea2.PNG)
  
  - We need to add "inc" folder in the project include directories:
  - Right click on RSA_viewer_project -> Properties -> C/C++ General -> Paths and Symbols -> Add -> Workspace -> RSA_viewer_project/inc
@@ -69,7 +69,7 @@ You should have 3 projects
 - When the terminal is ready, right click RSA_viewer_project -> Run as -> Launch on hardware (System Debugger)
 - Press enter in the terminal, you should see:
 
-![teraterm1](https://user-images.githubusercontent.com/67143135/85725080-142da580-b6f5-11ea-9455-689780df846a.PNG)
+![teraterm1](https://user-images.githubusercontent.com/67143135/91533438-294ecc80-e910-11ea-9cd5-e62caad463d8.PNG)
 
 
 The attack is ready.
