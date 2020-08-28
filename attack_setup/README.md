@@ -5,8 +5,8 @@
 
 ## RSA & AES Project Tutorial 
 
-- Detailed guidelines for building the SideLine dualcore AES attack are available in [**AES_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup)
-- Detailed guidelines for building the RSA experiments are available in [**RSA_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup)
+- Detailed guidelines for building and flashing the AES attack project are available in [**AES_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup)
+- Detailed guidelines for building and flashing the RSA experiment project are available in [**RSA_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup)
 
 ## Our Experimental Setup
 
