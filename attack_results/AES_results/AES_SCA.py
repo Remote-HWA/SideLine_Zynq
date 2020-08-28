@@ -11,12 +11,12 @@ class AES_SCA(object):
     def __init__(self):
 
         ##### User main parameters #####
-        self.inPath = "C:\\Users\\10055748\\Documents\\SideLine\\others\\AES\\aes_sca" # name of the file which contains the DLL traces
+        self.inPath = "your_path\\aes_sideline" # name of the file which contains the DLL traces
         self.nSample = 200 # number of sample per DLL trace
-        self.nTrace = 10000000 # number of DLL traces
+        self.nTrace = 1000000 # number of DLL traces
 
         ##### Advanced parameters #####
-        self.outFolder = os.path.join(os.getcwd(),"DLL_AES_results")
+        self.outFolder = os.path.join(os.path.dirname(self.inPath),"DLL_AES_results")
         self.moduloval = 10000 # Refresh Rate (processed traces)
         self.startTime = time.time() # Get time at the begining of treatment
         self.lineKey = b""

@@ -11,13 +11,12 @@ class RSA_SCA(object):
     def __init__(self):
 
         ##### User main parameters #####
-        dataFileName = "ladder_sideline" # name of the file which contains the DLL traces
+        self.inPath = "your_path\\naive_sideline" # path of the file which contains the DLL traces
         self.nSample = 30000 # number of sample per DLL trace
         self.nTrace = 2000 # number of DLL traces
 
         ##### Advanced parameters #####
-        self.inPath = os.path.join(os.getcwd(),dataFileName) 
-        self.outFolder = os.path.join(os.getcwd(),"DLL_RSA_results")
+        self.outFolder = os.path.join(os.path.dirname(self.inPath),"DLL_RSA_results")
         self.moduloval = 100 # Refresh Rate (processed traces)
         self.startTime = time.time() # Get time at the begining of treatment
         self.lineKey = b""
