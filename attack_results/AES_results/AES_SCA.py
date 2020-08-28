@@ -11,12 +11,11 @@ class AES_SCA(object):
     def __init__(self):
 
         ##### User main parameters #####
-        dataFileName = "aes" # name of the file which contains the DLL traces
-        self.nSample = 600 # number of sample per DLL trace
-        self.nTrace = 100 # number of DLL traces
+        self.inPath = "C:\\Users\\10055748\\Documents\\SideLine\\others\\AES\\aes_sca" # name of the file which contains the DLL traces
+        self.nSample = 200 # number of sample per DLL trace
+        self.nTrace = 10000000 # number of DLL traces
 
         ##### Advanced parameters #####
-        self.inPath = os.path.join(os.getcwd(),dataFileName) 
         self.outFolder = os.path.join(os.getcwd(),"DLL_AES_results")
         self.moduloval = 10000 # Refresh Rate (processed traces)
         self.startTime = time.time() # Get time at the begining of treatment
@@ -123,7 +122,7 @@ class AES_SCA(object):
             if self.Check_Data_Integrity(dataFile) == 1:
 
                 dataArray = np.frombuffer(self.lineSample,dtype=np.uint8)[0:self.nSample]
-                ptString =  self.linePlain[12:45].decode("utf-8")
+                ptString =  self.linePlain[12:45]
                 ptArray = [int(ptString[i*2]+ptString[i*2+1],16) for i in range(0,16)]
 
                 globalDataArray += dataArray
