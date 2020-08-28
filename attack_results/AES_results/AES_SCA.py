@@ -13,7 +13,7 @@ class AES_SCA(object):
         ##### User main parameters #####
         self.inPath = "your_path\\aes_sideline" # name of the file which contains the DLL traces
         self.nSample = 200 # number of sample per DLL trace
-        self.nTrace = 1000000 # number of DLL traces
+        self.nTrace = 10000000 # number of DLL traces
 
         ##### Advanced parameters #####
         self.outFolder = os.path.join(os.path.dirname(self.inPath),"DLL_AES_results")
@@ -149,6 +149,7 @@ class AES_SCA(object):
         #Close data file
         print("\n\n%d values removed"%(counterERR))
         print("%d values validated"%(counterOK))
+        self.nTrace = counterOK
         dataFile.close()
 
         #Compute average & variance 
