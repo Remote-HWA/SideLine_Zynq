@@ -16,7 +16,7 @@ This repository contains:
 
 - DLL datasets for AES and RSA side-channel attacks and Python scripts for data treatment, Correlation Power Analysis and Simple Power Analysis. These resources are located in the folder [**attack_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results). 
 
-## Reproducing SideLine Setup 
+## Attack Setup
 
 ### SideLine on AES
 The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1). 
@@ -29,7 +29,7 @@ The attack is conducted on a Xilinx Zynq7000 SoC in baremetal mode. A C program 
 - Several custom RSAs are implemented (naive, constant time, montgomery ladder). **WolfSSL** crypto library was used to develop the different RSA variants.
 - The RSA attack tutorial is available in [**SideLine on RSA**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup)
 
-## Reproducing SideLine SCA 
+## Attack Results
 
 - A database containing DLL acquisitions for AES and RSA is provided in the latest release. 
 - Python scripts located in [**AES_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES_results) and [**RSA_results**](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/RSA_results) can be used to perform SPA and CPA attacks. These scripts can be directly used on the database file or on your own experiments file. 
