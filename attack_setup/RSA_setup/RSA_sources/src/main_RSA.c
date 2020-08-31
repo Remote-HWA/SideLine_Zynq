@@ -1,3 +1,24 @@
+/*******************************************************************************
+*               SideLine 2020 - https://github.com/Remote-HWA/SideLine/
+*
+* Name        : main_RSA.c
+*
+* Description : Perform RSA encryption while collecting DLL state using DMA.
+*               Data is exported through Uart.
+*
+* Author      : Remote-HWA
+*
+* Toolchain   : Xilinx ARM v7 GNU Toolchain
+*
+* Host        : Zynq XC7Z010-CLG400
+*
+*
+*******************************************************************************
+*
+* Version :     1.0
+*               31/08/2020 : 1.0 - Initial version
+*******************************************************************************/
+
 #include <main_RSA.h>
 
 // Number of measurements between each interrupt

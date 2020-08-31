@@ -1,3 +1,23 @@
+/*******************************************************************************
+*               SideLine 2020 - https://github.com/Remote-HWA/SideLine/
+*
+* Name        : main_CPU1.c
+*
+* Description : Perform OpenSSL AES encryption on CPU0 request
+*
+* Author      : Remote-HWA
+*
+* Toolchain   : Xilinx ARM v7 GNU Toolchain
+*
+* Host        : Zynq XC7Z010-CLG400
+*
+*
+*******************************************************************************
+*
+* Version :     1.0
+*               31/08/2020 : 1.0 - Initial version
+*******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

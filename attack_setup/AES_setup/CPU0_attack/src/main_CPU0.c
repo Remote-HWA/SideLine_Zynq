@@ -1,3 +1,25 @@
+/*******************************************************************************
+*               SideLine 2020 - https://github.com/Remote-HWA/SideLine/
+*
+* Name        : main_CPU0.c
+*
+* Description : Request AES encryption to CPU1, collect DLL value and export
+* 				data through Uart.
+*
+*
+* Author      : Remote-HWA
+*
+* Toolchain   : Xilinx ARM v7 GNU Toolchain
+*
+* Host        : Zynq XC7Z010-CLG400
+*
+*
+*******************************************************************************
+*
+* Version :     1.0
+*               31/08/2020 : 1.0 - Initial version
+*******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
