@@ -12,7 +12,6 @@ import os
 import matplotlib.pyplot as plt
 import time
 
-
 class RSA_SCA(object):
 
     def __init__(self):

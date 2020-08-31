@@ -18,14 +18,14 @@ class AES_SCA(object):
     def __init__(self):
 
         ##### User main parameters #####
-        self.inPath = "E:\\These\\SideLine_git\\sideline_aes" # name of the file which contains the DLL traces
+        self.inPath = "your_path\\database\\aes_sideline" # name of the file which contains the DLL traces
         self.nSample = 200 # number of sample per DLL trace
         self.nTrace = 10000000 # number of DLL traces
 
         ##### Advanced parameters #####
         self.outFolder = os.path.join(os.path.dirname(self.inPath),"DLL_AES_results")
+        self.startTime = time.time() # For progression information
         self.moduloval = 10000 # Refresh Rate (processed traces)
-        self.startTime = time.time() # Refresh Rate (processed traces)
         self.lineCounter = 0
         self.keyArray = np.zeros(16,np.uint8)
         self.ptArray = np.zeros(16,np.uint8)
