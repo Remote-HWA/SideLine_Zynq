@@ -1,4 +1,11 @@
-#### Attack Example Script ####
+# -----------------------------------------------------------
+# SideLine version 1.0.0 - RSA_SCA.py
+#
+# Simple python script for RSA traces visualization. 
+#
+# (C) 2020 https://github.com/Remote-HWA/SideLine/
+# -----------------------------------------------------------
+
 from scipy import signal
 import numpy as np
 import os
@@ -11,19 +18,16 @@ class RSA_SCA(object):
     def __init__(self):
 
         ##### User main parameters #####
-        self.inPath = "your_path\\naive_sideline" # path of the file which contains the DLL traces
+        self.inPath = "your_path\\database\\naive_sideline" # path of the file which contains the DLL traces
         self.nSample = 30000 # number of sample per DLL trace
         self.nTrace = 2000 # number of DLL traces
 
         ##### Advanced parameters #####
         self.outFolder = os.path.join(os.path.dirname(self.inPath),"DLL_RSA_results")
+        self.startTime = time.time() # For progression information
         self.moduloval = 100 # Refresh Rate (processed traces)
-        self.startTime = time.time() # Get time at the begining of treatment
-        self.lineKey = b""
-        self.linePlain = b""
-        self.lineSample = b""
-        self.lineCipher = b""
         self.lineCounter = 0
+        self.dataArray = np.zeros(self.nSample,dtype=np.double)
 
         ##### Butterworth Filter #####
         fs = 16000 # DLL Sampling frequency (Khz)
@@ -47,44 +51,35 @@ class RSA_SCA(object):
                     self.outFolder = self.outFolder+"_%02d"%(counterlog)
                     break  
 
-
     def Check_Data_Integrity(self,dataFile): # check if the uart log file data is corrupted 
 
         valid = 1
         state = -1
 
+        #Check plaintext (counter)
         while state == -1:
             
-            self.linePlain = dataFile.readline().decode("utf-8")
-            state = self.linePlain.find("plaintext : ")
+            linePlain = dataFile.readline().decode("utf-8")
+            state = linePlain.find("plaintext : ")
             self.lineCounter += 1
 
-            if not self.linePlain:
+            if not linePlain:
                 print("no more line")
                 return 2
 
-            if self.linePlain == "":
+            if linePlain == "":
                 print("empty line")
-                return 2
-
-
-        if len(self.linePlain) != 45:
-            print("plain line error: %d: line %d"%(len(self.linePlain),self.lineCounter))
-            valid = 0
-
-        self.lineSample = dataFile.readline() 
+                return 2    
+        
+        #Check samples 
+        lineSample = dataFile.readline() 
         self.lineCounter += 1
 
-        if len(self.lineSample) < self.nSample:
-            print("sample line error: %d > %d: line %d"%(self.nSample,len(self.lineSample),self.lineCounter))
+        try:
+            self.dataArray = np.frombuffer(lineSample,dtype=np.uint8)[0:self.nSample]
+        except:
+            print("sample line error: %d > %d"%(self.nSample,len(lineSample),self.lineCounter))
             valid = 0
-
-        self.lineCipher = dataFile.readline() 
-        self.lineCounter += 1
-
-        if len(self.lineCipher) != 46:
-            print("cipher line error: %d: line %d"%(len(self.lineCipher),self.lineCounter))
-            valid = 0  
 
         return valid
 
@@ -94,13 +89,15 @@ class RSA_SCA(object):
         iTrace = 0
         counterOK = 0
         counterERR = 0
+        keyFound = -1
         globalDataArray = np.zeros(self.nSample)
         globalFilteredDataArray = np.zeros(self.nSample)
         dataFile = open(self.inPath,'rb') # file that contains the DLL samples 
 
-        while self.lineKey.decode("utf-8").find("key : ") == -1:
-            self.lineKey = dataFile.readline() 
-            self.lineCounter += 1
+        # Search the key string to start treatment
+        while keyFound == -1:
+            lineKey = dataFile.readline() 
+            keyFound = lineKey.decode("utf-8").find("key : ")
 
         while iTrace < self.nTrace :
 
@@ -108,18 +105,15 @@ class RSA_SCA(object):
             if (iTrace%self.moduloval)==0 and iTrace != 0:
                 print("Processed traces: %d - Time: %.2f/%.2fmin - Progression: %.2f%%"%(iTrace,(time.time() - self.startTime)/60,((time.time() - self.startTime)/(iTrace/self.nTrace))/60,(iTrace/self.nTrace)*100),end="\r")
             
-            state = self.Check_Data_Integrity(dataFile)
+            if self.Check_Data_Integrity(dataFile) == 1:
 
-            if state == 1:
-
-                dataArray = np.frombuffer(self.lineSample,dtype=np.uint8)[0:self.nSample]
-                globalDataArray += dataArray
-                dataArray = signal.filtfilt(self.b,self.a, dataArray)
-                globalFilteredDataArray += dataArray
+                globalDataArray += self.dataArray
+                self.dataArray = signal.filtfilt(self.b,self.a, self.dataArray)
+                globalFilteredDataArray += self.dataArray
                 counterOK += 1
                 iTrace += 1
 
-            elif state == 2:
+            elif self.Check_Data_Integrity(dataFile) == 2:
 
                 print("No more line in file: exiting with %d traces"%iTrace)
                 break

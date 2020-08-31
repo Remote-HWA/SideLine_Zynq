@@ -1,30 +1,35 @@
-#### Attack Example Script ####
+# -----------------------------------------------------------
+# SideLine version 1.0.0 - AES_SCA.py
+#
+# Simple python script for AES traces visualization 
+# and CPA computation.
+#
+# (C) 2020 https://github.com/Remote-HWA/SideLine/
+# -----------------------------------------------------------
+
 from scipy import signal
 import numpy as np
 import os
 import matplotlib.pyplot as plt
 import time
 
-
 class AES_SCA(object):
 
     def __init__(self):
 
         ##### User main parameters #####
-        self.inPath = "your_path\\aes_sideline" # name of the file which contains the DLL traces
+        self.inPath = "E:\\These\\SideLine_git\\sideline_aes" # name of the file which contains the DLL traces
         self.nSample = 200 # number of sample per DLL trace
         self.nTrace = 10000000 # number of DLL traces
 
         ##### Advanced parameters #####
         self.outFolder = os.path.join(os.path.dirname(self.inPath),"DLL_AES_results")
         self.moduloval = 10000 # Refresh Rate (processed traces)
-        self.startTime = time.time() # Get time at the begining of treatment
-        self.lineKey = b""
-        self.linePlain = b""
-        self.lineSample = b""
-        self.lineCipher = b""
+        self.startTime = time.time() # Refresh Rate (processed traces)
         self.lineCounter = 0
-        self.keyArray = [0]*16
+        self.keyArray = np.zeros(16,np.uint8)
+        self.ptArray = np.zeros(16,np.uint8)
+        self.dataArray = np.zeros(self.nSample,dtype=np.double)
 
         ##### Butterworth Filter #####
         fs = 16000 # DLL Sampling frequency (Khz)
@@ -63,57 +68,68 @@ class AES_SCA(object):
         valid = 1
         state = -1
 
+        #Check plaintext 
         while state == -1:
             
-            self.linePlain = dataFile.readline().decode("utf-8")
-            state = self.linePlain.find("plaintext : ")
+            linePlain = dataFile.readline().decode("utf-8")
+            state = linePlain.find("plaintext : ")
             self.lineCounter += 1
 
-            if not self.linePlain:
+            if not linePlain:
                 print("no more line")
                 return 2
 
-            if self.linePlain == "":
+            if linePlain == "":
                 print("empty line")
                 return 2
 
-
-        if len(self.linePlain) != 45:
-            print("plain line error: %d: line %d"%(len(self.linePlain),self.lineCounter))
-            valid = 0
-
-        self.lineSample = dataFile.readline() 
+        try: 
+            ptString =  linePlain[12:45]
+            self.ptArray = [int(ptString[i*2]+ptString[i*2+1],16) for i in range(0,16)]
+        except:
+            print("plain line error: %d: line %d"%(len(linePlain),self.lineCounter))
+            valid = 0         
+        
+        #Check samples
+        lineSample = dataFile.readline() 
         self.lineCounter += 1
 
-        if len(self.lineSample) < self.nSample:
-            print("sample line error: %d > %d: line %d"%(self.nSample,len(self.lineSample),self.lineCounter))
+        try:
+            self.dataArray = np.frombuffer(lineSample,dtype=np.uint8)[0:self.nSample]
+        except:
+            print("sample line error: %d > %d: line %d"%(self.nSample,len(lineSample),self.lineCounter))
             valid = 0
 
-        self.lineCipher = dataFile.readline() 
-        self.lineCounter += 1
+        #Check ciphertext
+        #self.lineCipher = dataFile.readline() 
+        #self.lineCounter += 1
 
-        if len(self.lineCipher) != 46:
-            print("cipher line error: %d: line %d"%(len(self.lineCipher),self.lineCounter))
-            valid = 0  
+        #if len(self.lineCipher) != 46:
+        #    print("cipher line error: %d: line %d"%(len(self.lineCipher),self.lineCounter))
+        #    valid = 0  
 
         return valid
 
 
     def Data_Acquisition(self):
 
+		iTrace = 0
         counterOK = 0
         counterERR = 0
+        keyFound = -1
         globalDataArray = np.zeros(self.nSample)
         globalFilteredDataArray = np.zeros(self.nSample)
         dataFile = open(self.inPath,'rb') # file that contains the DLL samples 
 
         # Parse the key and put it in a byte array
-        while self.lineKey.decode("utf-8").find("key : ") == -1:
-            self.lineKey = dataFile.readline() 
-        keyString = self.lineKey[6:39].decode("utf-8")
+        while keyFound == -1:
+            lineKey = dataFile.readline() 
+            keyFound = lineKey.decode("utf-8").find("key : ")
+
+        keyString = lineKey[6:39].decode("utf-8")
         self.keyArray = [int(keyString[i*2]+keyString[i*2+1],16) for i in range(0,16)]
 
-        for iTrace in range(0, self.nTrace):
+        while iTrace < self.nTrace :
 
             #print treatment progression
             if (iTrace%self.moduloval)==0 and iTrace != 0:
@@ -121,21 +137,18 @@ class AES_SCA(object):
 
             if self.Check_Data_Integrity(dataFile) == 1:
 
-                dataArray = np.frombuffer(self.lineSample,dtype=np.uint8)[0:self.nSample]
-                ptString =  self.linePlain[12:45]
-                ptArray = [int(ptString[i*2]+ptString[i*2+1],16) for i in range(0,16)]
+                globalDataArray += self.dataArray
 
-                globalDataArray += dataArray
-
-                dataArray = signal.filtfilt(self.b,self.a, dataArray)
+                self.dataArray = signal.filtfilt(self.b,self.a, self.dataArray)
 
                 for iByte in range(0,self.nByte):
-                    self.sumPopClass[iByte][ptArray[iByte]] += 1
-                    self.sumAvgClass[iByte][ptArray[iByte]] += dataArray
-                    self.sumVarClass[iByte][ptArray[iByte]] += np.square(dataArray)
-                self.sumVar += np.square(dataArray)
-                self.sumAvg += dataArray
+                    self.sumPopClass[iByte][self.ptArray[iByte]] += 1
+                    self.sumAvgClass[iByte][self.ptArray[iByte]] += self.dataArray
+                    self.sumVarClass[iByte][self.ptArray[iByte]] += np.square(self.dataArray)
+                self.sumVar += np.square(self.dataArray)
+                self.sumAvg += self.dataArray
                 counterOK += 1
+                iTrace += 1
 
             elif self.Check_Data_Integrity(dataFile) == 2:
 
@@ -144,7 +157,6 @@ class AES_SCA(object):
 
             else:
                 counterERR += 1
-                iTrace -= 1
 
         #Close data file
         print("\n\n%d values removed"%(counterERR))
