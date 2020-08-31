@@ -52,7 +52,7 @@ You should have 3 projects
 
 **3) Import GIT Source Code (RSA_setup)**
   - First, delete the existing "src" folder in the RSA_viewer_project arborescence
-  - Then, drag and drop git folders [**src**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup/RSA_sources/src) and [**inc**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup/RSA_sources/inc) into RSA_viewer_project (copy files and folders)  
+  - Then, drag and drop git folders [**src**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup/RSA_sources/src), [**inc**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup/RSA_sources/inc), wolfcrypt and wolfssl into RSA_viewer_project (copy files and folders)  
  Project arborescence should look like that: 
  
  ![attack_arbo](https://user-images.githubusercontent.com/67143135/91533432-28b63600-e910-11ea-96a0-5906af471ea2.PNG)
