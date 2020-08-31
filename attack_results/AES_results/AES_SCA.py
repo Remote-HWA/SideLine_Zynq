@@ -18,7 +18,7 @@ class AES_SCA(object):
     def __init__(self):
 
         ##### User main parameters #####
-        self.inPath = "your_path\\database\\aes_sideline" # name of the file which contains the DLL traces
+        self.inPath = "E:\\These\\SideLine_git\\aes_sideline" # name of the file which contains the DLL traces
         self.nSample = 200 # number of sample per DLL trace
         self.nTrace = 10000000 # number of DLL traces
 
@@ -113,7 +113,7 @@ class AES_SCA(object):
 
     def Data_Acquisition(self):
 
-		iTrace = 0
+        iTrace = 0
         counterOK = 0
         counterERR = 0
         keyFound = -1
@@ -211,7 +211,7 @@ class AES_SCA(object):
                 self.sumVarClass[iByte][iClass] = np.divide(self.sumVarClass[iByte][iClass],self.sumPopClass[iByte][iClass]) - np.square(self.sumAvgClass[iByte][iClass])
 
         #Turn Global variance into standard deviation
-        self.sumVar = np.sqrt(self.sumVar)
+        stdDev = np.sqrt(self.sumVar)
 
         print("Compute Byte %d..."%iByte)
 
@@ -256,7 +256,7 @@ class AES_SCA(object):
 
             #normalize covariance if correlation requested
             X = np.divide(Correlation[iHyp], YSTDDEV)
-            Correlation[iHyp] = np.divide(X,self.sumVar) 
+            Correlation[iHyp] = np.divide(X,stdDev) 
 
         return Correlation
 
