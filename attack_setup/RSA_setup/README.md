@@ -1,12 +1,13 @@
-# Tutorial: Building SideLine (RSA) on Xilinx Zynq-7000
+# Tutorial: Building SideLine (RSA) on  <!---Xilinx Zynq-7000--> *******
 
 ## Experimental Setup / Software Version
 
-**Board**: Zybo PB200-279 REV-B  
-**Processor**: Zynq XC7Z010CLG400  
-**Design suite**: Vivado 2018.1  
-**SDK**: Xilinx SDK 2018.1  
+**Board**: <!---Zybo PB200-279 REV-B-->*******  
+**Processor**: <!---Zynq XC7Z010CLG400-->*******  
+**Design suite**: <!---Vivado 2018.1-->*******  
+**SDK**: <!---Xilinx SDK 2018.1-->*******  
 
+<!---
 ## Prelude: Vivado
 
 If you already have a working Hardware Platform Specification File for your board, you can skip this step and import it directly in the SDK.
@@ -32,8 +33,9 @@ For those who don't have this file, Vivado allows us to create and customize it.
 **5) Export HW**
 - File -> Export -> Export HW (check include bitstream)
 - File -> Launch SDK
+--> 
 
-## Xilinx SDK (Vitis)
+## ******* SDK <!---(Vitis)-->
 
 **1) Verify that the HW platform project exists in the project explorer** (if not add it)
 
