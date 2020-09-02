@@ -1,5 +1,7 @@
 # Tutorial: Building SideLine (RSA) on  <!---Xilinx Zynq-7000--> *******
 
+Source code is not available right now, the responsible disclosure process is still ongoing.
+
 ## Experimental Setup / Software Version
 
 **Board**: <!---Zybo PB200-279 REV-B-->*******  
