@@ -1,5 +1,7 @@
 # Tutorial: Building SideLine (AES) on *******
 
+Source code is not available right now, the responsible disclosure process is still ongoing.
+
 ## Experimental Setup / Software Version
 
 **Board**: *******  
