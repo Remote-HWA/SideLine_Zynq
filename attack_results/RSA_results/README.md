@@ -1,4 +1,4 @@
-# Custom RSA attack on Xilinx Zynq SoC
+# Custom RSA attack on <!---Xilinx Zynq--> ******* SoC
 
 This folder contains example results and a python script to perform the SPA attack on several custom RSA implementations.
 
