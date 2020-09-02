@@ -1,11 +1,11 @@
-# Tutorial: Building SideLine (AES) on #######
+# Tutorial: Building SideLine (AES) on *******
 
 ## Experimental Setup / Software Version
 
-**Board**: #######  
-**Processor**: #######
-**Design suite**: ####### 
-**SDK**: #######
+**Board**: *******  
+**Processor**: *******  
+**Design suite**: *******  
+**SDK**: *******  
 
 <!---## Prelude: Vivado
 
@@ -36,7 +36,8 @@ For those who don't have this file, Vivado allows us to create and customize it.
 - File -> Export -> Export HW (check include bitstream)
 - File -> Launch SDK)
 -->
-## Xilinx SDK (Vitis)
+
+## ******* SDK
 
 **1) Verify that the HW platform project exists in the project explorer** (if not add it)
 
