@@ -7,7 +7,7 @@
 **Design suite**: *******  
 **SDK**: *******  
 
-<!---## Prelude: Vivado
+<!--- ## Prelude: Vivado
 
 If you already have a working Hardware Platform Specification File for your board, you can skip this step and import it directly in the SDK.
 For those who don't have this file, Vivado allows us to create and customize it. 
@@ -59,7 +59,7 @@ For those who don't have this file, Vivado allows us to create and customize it.
 
 You should have 5 projects
 
-![projects](https://user-images.githubusercontent.com/67143135/85715121-65389c00-b6eb-11ea-9028-1e2ac7de4e1d.PNG)
+ <!---![projects](https://user-images.githubusercontent.com/67143135/85715121-65389c00-b6eb-11ea-9028-1e2ac7de4e1d.PNG)-->
 
 
 **4) Import GIT Source Code (CPU0_attack_project)**
@@ -67,7 +67,7 @@ You should have 5 projects
   - Then, drag and drop git folders  [**src**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU0_attack/src) and [**inc**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU0_attack/inc) into CPU0_attack_project (copy files and folders)  
  Project arborescence should look like that: 
  
- ![attack_arbo](https://user-images.githubusercontent.com/67143135/85715557-df692080-b6eb-11ea-8354-8745e1370017.PNG)
+ <!---![attack_arbo](https://user-images.githubusercontent.com/67143135/85715557-df692080-b6eb-11ea-8354-8745e1370017.PNG)-->
  
  - We need to add "inc" folder in the project include directories:
  - Right click on CPU0_attack_project -> Properties -> C/C++ General -> Paths and Symbols -> Add -> Workspace -> CPU0_attack_project/inc
@@ -78,7 +78,7 @@ You should have 5 projects
   
 Screenshot of the global arborescence: 
 
-![global_arbo](https://user-images.githubusercontent.com/67143135/85715495-ce201400-b6eb-11ea-8279-ebc533fdf40d.PNG)
+ <!---![global_arbo](https://user-images.githubusercontent.com/67143135/85715495-ce201400-b6eb-11ea-8279-ebc533fdf40d.PNG)-->
 
 **6) Run Configuration**
 
