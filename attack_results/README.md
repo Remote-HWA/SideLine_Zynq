@@ -1,6 +1,6 @@
-# SideLine - <!---Zynq--> ******* SCA results
+# SideLine - ******* SCA results
 
-This folder contain SCA attack scripts for AES and RSA and the experimental results that were obtained on the <!---Zybo--> ******* board.
+This folder contain SCA attack scripts for AES and RSA and the experimental results that were obtained on the ******* board.
 - To perform a correlation power analysis on openSSL AES use the AES_SCA.py script located in [AES_results](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/AES_results)
 - To perform a simple power analysis attack on RSA use the RSA_SCA.py script located in [RSA_results](https://github.com/Remote-HWA/SideLine/tree/master/attack_results/RSA_results)
 
