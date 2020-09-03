@@ -16,7 +16,7 @@ Source code is not available right now, the responsible disclosure process is st
 **2) Create the RSA project**
   - File -> New -> Application Project
   - Project Name -> RSA_viewer_project
-  - Processor -> ps7_cortexa9_0
+  - Processor -> *******
   - Click Next 
   - Select "Empty Application"
   - Click Finish
