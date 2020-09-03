@@ -1,0 +1,17 @@
+| Byte | RealKey | FoundKey | Success | Correlation Rate | RealKey Rank |
+|  00  |   7d    |    7d    | Success |       00.21 %    |       1      |
+|  01  |   c4    |    c4    | Success |       00.19 %    |       1      |
+|  02  |   04    |    04    | Success |       00.20 %    |       1      |
+|  03  |   63    |    63    | Success |       00.15 %    |       1      |
+|  04  |   ee    |    ee    | Success |       00.26 %    |       1      |
+|  05  |   8d    |    8d    | Success |       00.30 %    |       1      |
+|  06  |   0d    |    0d    | Success |       00.21 %    |       1      |
+|  07  |   11    |    e3    | Fail    |       00.14 %    |      80      | 
+|  08  |   56    |    56    | Success |       00.16 %    |       1      |
+|  09  |   da    |    59    | Fail    |       00.15 %    |     235      | 
+|  10  |   16    |    16    | Success |       00.29 %    |       1      |
+|  11  |   8a    |    8a    | Success |       00.23 %    |       1      |
+|  12  |   71    |    71    | Success |       00.20 %    |       1      |
+|  13  |   1d    |    1d    | Success |       00.20 %    |       1      |
+|  14  |   ef    |    ef    | Success |       00.15 %    |       1      |
+|  15  |   ba    |    ba    | Success |       00.19 %    |       1      |
