@@ -9,36 +9,6 @@ Source code is not available right now, the responsible disclosure process is st
 **Design suite**: *******  
 **SDK**: *******  
 
-<!--- ## Prelude: Vivado
-
-If you already have a working Hardware Platform Specification File for your board, you can skip this step and import it directly in the SDK.
-For those who don't have this file, Vivado allows us to create and customize it. 
-
-**1) Create New Vivado Project**
-  - Start Vivado
-  - Select "Create Project" 
-  - Do not add constraint or source files
-  - Select your board part (here Zybo). *If the board file does not appear in your vivado version, download it and [**add it**](https://reference.digilentinc.com/reference/software/vivado/board-files?redirect=1)*
-  
-**2) Create a simple block design**
-  - Click on "Create Block Design" and name it "SideLine"
-  - In the "Diagram" window, click on "+" to add an IP
-  - Add "Zynq7 processing system" block
-  - Click on "Run block automation"
-  - Make sure that the "Apply Board Preset" is checked then press "OK"
-  - (optional) Modify UART1 baud rate to 921600 bauds (increases attack speed)
-  - Connect "M_AXI_GP0_ACLK" to "FCLK_CLK0"
-  - In the "Sources" menu, right click on the block design and select "Create HDL Wrapper"
-  
-**3) Generate Bitstream**
- - Click on "Generate block design" located in the flow navigator
- - if successful select "Generate Bitstream" located in the flow navigator 
-
-**4) Export HW**
-- File -> Export -> Export HW (check include bitstream)
-- File -> Launch SDK)
--->
-
 ## ******* SDK
 
 **1) Verify that the HW platform project exists in the project explorer** (if not add it)
@@ -61,7 +31,7 @@ For those who don't have this file, Vivado allows us to create and customize it.
 
 You should have 5 projects
 
- <!---![projects](https://user-images.githubusercontent.com/67143135/85715121-65389c00-b6eb-11ea-9028-1e2ac7de4e1d.PNG)-->
+ <!---IMAGE-->
 
 
 **4) Import GIT Source Code (CPU0_attack_project)**
@@ -69,7 +39,7 @@ You should have 5 projects
   - Then, drag and drop git folders  [**src**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU0_attack/src) and [**inc**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup/CPU0_attack/inc) into CPU0_attack_project (copy files and folders)  
  Project arborescence should look like that: 
  
- <!---![attack_arbo](https://user-images.githubusercontent.com/67143135/85715557-df692080-b6eb-11ea-8354-8745e1370017.PNG)-->
+ <!---IMAGE-->
  
  - We need to add "inc" folder in the project include directories:
  - Right click on CPU0_attack_project -> Properties -> C/C++ General -> Paths and Symbols -> Add -> Workspace -> CPU0_attack_project/inc
@@ -80,7 +50,7 @@ You should have 5 projects
   
 Screenshot of the global arborescence: 
 
- <!---![global_arbo](https://user-images.githubusercontent.com/67143135/85715495-ce201400-b6eb-11ea-8279-ebc533fdf40d.PNG)-->
+ <!---IMAGE-->
 
 **6) Run Configuration**
 
