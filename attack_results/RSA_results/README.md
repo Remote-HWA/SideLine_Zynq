@@ -1,4 +1,4 @@
-# Custom RSA attack on <!---Xilinx Zynq--> ******* SoC
+# Custom RSA attack on  ******* SoC
 
 This folder contains example results and a python script to perform the SPA attack on several custom RSA implementations.
 
@@ -8,7 +8,7 @@ The folder **Database** available in the latest SideLine [**release**] contains 
 
 The python script [**RSA_SCA.py**](https://github.com/Remote-HWA/SideLine/blob/master/attack_results/RSA_Results/RSA_SCA.py) allows the user to visualize the RSA power consumption. It reads the datafiles, applies post-treatment on the traces and save RSA power consumption in png and binay and pdf files. 
 
-The folders ConstantTime_RSA, MontgomeryLadder_RSA and Naive_RSA contain example results obtained with the <!---Zybo--> ******* board.
+The folders ConstantTime_RSA, MontgomeryLadder_RSA and Naive_RSA contain example results obtained with the ******* board.
 
 ## How to use the python SPA script
 
