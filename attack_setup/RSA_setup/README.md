@@ -1,43 +1,15 @@
-# Tutorial: Building SideLine (RSA) on  <!---Xilinx Zynq-7000--> *******
+# Tutorial: Building SideLine (RSA) on *******
 
 Source code is not available right now, the responsible disclosure process is still ongoing.
 
 ## Experimental Setup / Software Version
 
-**Board**: <!---Zybo PB200-279 REV-B-->*******  
-**Processor**: <!---Zynq XC7Z010CLG400-->*******  
-**Design suite**: <!---Vivado 2018.1-->*******  
-**SDK**: <!---Xilinx SDK 2018.1-->*******  
+**Board**: *******  
+**Processor**: *******  
+**Design suite**: *******  
+**SDK**: *******  
 
-<!---
-## Prelude: Vivado
-
-If you already have a working Hardware Platform Specification File for your board, you can skip this step and import it directly in the SDK.
-For those who don't have this file, Vivado allows us to create and customize it. 
-
-**1) Create New Vivado Project**
-  - Select your board (Here Zybo)
-  - No constraint file
-  - No source file
-  
-**2) Create a simple block design**
-  - Add "Zynq7 processing system"
-  - Run block automation
-  - Check apply board preset then press "OK"
-  - (optional) Modify UART1 baud rate to 921600 bauds (increases attack speed)
-  - Connect "M_AXI_GP0_ACLK" to "FCLK_CLK0"
-  - Create HDL wrapper
-  
-**3) Generate Block Design (Global)**
-
-**4) Generate Bitstream**
-
-**5) Export HW**
-- File -> Export -> Export HW (check include bitstream)
-- File -> Launch SDK
---> 
-
-## ******* SDK <!---(Vitis)-->
+## ******* SDK 
 
 **1) Verify that the HW platform project exists in the project explorer** (if not add it)
 
@@ -51,7 +23,7 @@ For those who don't have this file, Vivado allows us to create and customize it.
 
 You should have 3 projects
 
-<!---![projects](https://user-images.githubusercontent.com/67143135/91533436-294ecc80-e910-11ea-843e-fd6c00a804db.PNG)-->
+<!---IMAGE-->
 
 
 **3) Import GIT Source Code (RSA_setup)**
@@ -59,7 +31,7 @@ You should have 3 projects
   - Then, drag and drop git folders [**src**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup/RSA_sources/src), [**inc**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup/RSA_sources/inc), wolfcrypt and wolfssl into RSA_viewer_project (copy files and folders)  
  Project arborescence should look like that: 
  
- <!---![attack_arbo](https://user-images.githubusercontent.com/67143135/91533432-28b63600-e910-11ea-96a0-5906af471ea2.PNG)-->
+<!---IMAGE-->
  
  - We need to add "inc" folder in the project include directories:
  - Right click on RSA_viewer_project -> Properties -> C/C++ General -> Paths and Symbols -> Add -> Workspace -> RSA_viewer_project/inc
