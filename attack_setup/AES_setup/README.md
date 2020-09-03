@@ -16,7 +16,7 @@ Source code is not available right now, the responsible disclosure process is st
 **2) Create the attack project**
   - File -> New -> Application Project
   - Project Name -> CPU0_attack_project
-  - Processor CPU0 -> ps7_cortexa9_0
+  - Processor CPU0 -> *******
   - Click Next 
   - Select "Empty Application"
   - Click Finish
@@ -24,7 +24,7 @@ Source code is not available right now, the responsible disclosure process is st
 **3) Create the victim project**
   - File -> New -> Application Project
   - Project Name -> CPU1_victim_project
-  - Processor CPU0 -> ps7_cortexa9_1
+  - Processor CPU0 -> *******
   - Click Next 
   - Select "Empty Application"
   - Click Finish
