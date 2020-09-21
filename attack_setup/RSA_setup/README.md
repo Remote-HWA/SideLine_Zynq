@@ -1,22 +1,49 @@
-# Tutorial: Building SideLine (RSA) on *******
-
-Source code is not available right now, the responsible disclosure process is still ongoing.
+# Tutorial: Building SideLine (RSA) on Xilinx Zynq-7000 SoC
 
 ## Experimental Setup / Software Version
 
-**Board**: *******  
-**Processor**: *******  
-**Design suite**: *******  
-**SDK**: *******  
+- Board: Zybo PB200-279 REV B
+- Processor: Xilinx Zynq XC7Z010-1CLG400C
+- Design suite: Vivado 2018.1
+- SDK: Xilinx SDK 2018.1
 
-## ******* SDK 
+## Prelude: Vivado
+
+If you already have a working Hardware Platform Specification File for your board, you can skip this step and import it directly in the SDK.
+For those who don't have this file, Vivado allows us to create and customize it. 
+
+**1) Create New Vivado Project**
+  - Start Vivado
+  - Select "Create Project" 
+  - Do not add constraint or source files
+  - Select your board part (here Zybo). *If the board file does not appear in your vivado version, download it and [**add it**](https://reference.digilentinc.com/reference/software/vivado/board-files?redirect=1)*
+  
+**2) Create a simple block design**
+  - Click on "Create Block Design" and name it "SideLine"
+  - In the "Diagram" window, click on "+" to add an IP
+  - Add "Zynq7 processing system" block
+  - Click on "Run block automation"
+  - Make sure that the "Apply Board Preset" is checked then press "OK"
+  - (optional) Modify UART1 baud rate to 921600 bauds (increases attack speed)
+  - Connect "M_AXI_GP0_ACLK" to "FCLK_CLK0"
+  - In the "Sources" menu, right click on the block design and select "Create HDL Wrapper"
+  
+**3) Generate Bitstream**
+ - Click on "Generate block design" located in the flow navigator
+ - if successful select "Generate Bitstream" located in the flow navigator 
+
+**4) Export HW**
+- File -> Export -> Export HW (check include bitstream)
+- File -> Launch SDK)
+
+## Xilinx SDK 
 
 **1) Verify that the HW platform project exists in the project explorer** (if not add it)
 
 **2) Create the RSA project**
   - File -> New -> Application Project
   - Project Name -> RSA_viewer_project
-  - Processor -> *******
+  - Processor -> ps7_cortexa9_0
   - Click Next 
   - Select "Empty Application"
   - Click Finish

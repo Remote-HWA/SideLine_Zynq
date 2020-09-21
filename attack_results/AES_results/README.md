@@ -1,4 +1,4 @@
-# AES OpenSSL attack on ******* SoC
+# AES OpenSSL attack on Xilinx Zynq-7000 SoC
 
 This folder contains example results and a python script to perform the CPA attack on the OpenSSL AES implementation running within the victim core.
 

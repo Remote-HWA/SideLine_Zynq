@@ -19,13 +19,13 @@ This repository contains:
 ## Reproduce SideLine
 
 ### *SideLine on AES*
-The attack is conducted on a ####### SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1). 
+The attack is conducted on a Xilinx Zynq-7000 SoC in baremetal mode. Two C programs (attacker and victim) are implemented in two different physical cores (AP#0 and AP#1). 
 - The victim source code contains the **OpenSSL**  AES crypto implementation. It is used as an encryption service by the attack program.
 - The attack source code contain several methods which configure the encryption mode and uses DMA and DLL to perform SCA on the algorithms running in the victim program.
 - The AES attack tutorial is available in [**AES_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/AES_setup)
 
 ### *SideLine on RSA (new!)*
-The attack is conducted on a ####### SoC in baremetal mode. A C program handles the RSA calculation and the DLL acquisition. 
+The attack is conducted on a Xilinx Zynq-7000 SoC in baremetal mode. A C program handles the RSA calculation and the DLL acquisition. 
 - Several custom RSAs are implemented (naive, constant time, montgomery ladder). **WolfSSL** crypto library was used to develop the different RSA variants.
 - The RSA attack tutorial is available in [**RSA_setup**](https://github.com/Remote-HWA/SideLine/tree/master/attack_setup/RSA_setup)
 
@@ -43,8 +43,8 @@ A complete database containing DLL acquisitions for AES and RSA can be found in 
 
 
 ## Requirements
-- A ####### based development board 
-- Working installations of ####### and [**python3**](https://www.python.org/downloads/)
+- A Xilinx Zynq-7000 SoC based development board 
+- Working installations of Vivado, Vitis and [**python3**](https://www.python.org/downloads/)
 
 
 

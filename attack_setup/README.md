@@ -1,7 +1,7 @@
 ## HW & SW Requirements
 
-- ####### development board
-- ####### and [**Python3**](https://www.python.org/downloads/)
+- Xilinx Zynq-7000 SoC development board
+- Vivado, Vitis and [**Python3**](https://www.python.org/downloads/)
 
 ## RSA & AES Project Tutorial 
 
@@ -10,10 +10,10 @@
 
 ## Our Experimental Setup
 
-- Board: #######
-- Processor: #######
-- Design suite: #######
-- SDK: #######
+- Board: Zybo PB200-279 REV B
+- Processor: Xilinx Zynq XC7Z010-1CLG400C
+- Design suite: Vivado 2018.1
+- SDK: Xilinx SDK 2018.1
 
 
 
